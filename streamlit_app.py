@@ -23,19 +23,14 @@ st.set_page_config(
 
 
 # ============================================================
-# THEME-AWARE WEBSITE CSS
-#
-# IMPORTANT:
-# Uses Streamlit theme variables.
-# This allows the interface to automatically adapt
-# when Streamlit changes between light and dark themes.
+# THEME-AWARE CSS
 # ============================================================
 
 CUSTOM_CSS = """
 <style>
 
 /* =========================================================
-   SMARTPANTRY THEME VARIABLES
+   THEME VARIABLES
    ========================================================= */
 
 :root {
@@ -50,7 +45,10 @@ CUSTOM_CSS = """
         var(--text-color);
 
     --sp-primary:
-        var(--primary-color);
+        #2f704f;
+
+    --sp-primary-light:
+        #55936d;
 
     --sp-border:
         color-mix(
@@ -66,31 +64,17 @@ CUSTOM_CSS = """
             transparent
         );
 
-    --sp-soft:
-        color-mix(
-            in srgb,
-            var(--secondary-background-color) 85%,
-            var(--background-color)
-        );
-
     --sp-hover:
         color-mix(
             in srgb,
-            var(--primary-color) 10%,
+            #4f946a 12%,
             var(--secondary-background-color)
         );
 
-    --sp-primary-soft:
+    --sp-green-soft:
         color-mix(
             in srgb,
-            var(--primary-color) 16%,
-            var(--secondary-background-color)
-        );
-
-    --sp-primary-medium:
-        color-mix(
-            in srgb,
-            var(--primary-color) 35%,
+            #4f946a 14%,
             var(--secondary-background-color)
         );
 }
@@ -117,9 +101,20 @@ body,
 
     max-width: 1280px;
 
-    padding-top: 1.4rem;
+    padding-top: 2.2rem;
 
     padding-bottom: 4rem;
+}
+
+
+header[data-testid="stHeader"] {
+
+    background:
+        color-mix(
+            in srgb,
+            var(--background-color) 94%,
+            transparent
+        );
 }
 
 
@@ -129,71 +124,29 @@ body,
 
 .sp-hero {
 
-    position: relative;
+    width: 100%;
 
-    overflow: hidden;
+    box-sizing: border-box;
 
-    padding: 38px 42px;
+    padding: 35px 40px;
 
-    margin-bottom: 28px;
+    margin: 0 0 30px 0;
 
-    border-radius: 26px;
+    border-radius: 24px;
 
     background:
         linear-gradient(
             135deg,
-            #174b35 0%,
-            #2d7250 52%,
-            #70a57f 100%
+            #123e2d 0%,
+            #245e43 58%,
+            #578a69 100%
         );
 
     box-shadow:
-        0 16px 42px
-        rgba(0, 0, 0, 0.16);
+        0 14px 36px
+        rgba(0,0,0,.14);
 
     color: white;
-}
-
-
-.sp-hero::before {
-
-    content: "";
-
-    position: absolute;
-
-    width: 310px;
-
-    height: 310px;
-
-    border-radius: 50%;
-
-    right: -110px;
-
-    top: -150px;
-
-    background:
-        rgba(255,255,255,0.08);
-}
-
-
-.sp-hero::after {
-
-    content: "";
-
-    position: absolute;
-
-    width: 160px;
-
-    height: 160px;
-
-    border-radius: 50%;
-
-    right: 180px;
-
-    bottom: -110px;
-
-    background:
-        rgba(255,255,255,0.05);
 }
 
 
@@ -207,38 +160,34 @@ body,
 
     padding: 6px 11px;
 
-    margin-bottom: 14px;
-
-    border-radius: 999px;
+    margin-bottom: 13px;
 
     border:
         1px solid
-        rgba(255,255,255,0.20);
+        rgba(255,255,255,.18);
+
+    border-radius: 999px;
 
     background:
-        rgba(255,255,255,0.10);
+        rgba(255,255,255,.10);
 
     font-size: 11px;
 
     font-weight: 800;
 
-    letter-spacing: 0.7px;
+    letter-spacing: .6px;
 }
 
 
 .sp-hero-title {
 
-    position: relative;
-
-    z-index: 2;
-
-    font-size: 43px;
+    font-size: 42px;
 
     font-weight: 850;
 
-    letter-spacing: -1px;
+    line-height: 1.06;
 
-    line-height: 1.05;
+    letter-spacing: -1px;
 
     margin-bottom: 9px;
 }
@@ -246,23 +195,19 @@ body,
 
 .sp-hero-subtitle {
 
-    position: relative;
-
-    z-index: 2;
-
-    max-width: 720px;
+    max-width: 780px;
 
     font-size: 16px;
 
-    line-height: 1.62;
+    line-height: 1.6;
 
     color:
-        rgba(255,255,255,0.88);
+        rgba(255,255,255,.88);
 }
 
 
 /* =========================================================
-   PAGE TITLE
+   PAGE HEADERS
    ========================================================= */
 
 .sp-kicker {
@@ -274,7 +219,7 @@ body,
 
     font-weight: 800;
 
-    letter-spacing: 1.2px;
+    letter-spacing: 1.15px;
 
     text-transform: uppercase;
 
@@ -293,7 +238,7 @@ body,
 
     font-weight: 850;
 
-    letter-spacing: -0.6px;
+    letter-spacing: -.6px;
 
     margin-bottom: 5px;
 }
@@ -313,16 +258,16 @@ body,
 
 
 /* =========================================================
-   CUSTOM KPI CARD
+   KPI CARDS
    ========================================================= */
 
 .sp-metric-card {
 
-    min-height: 133px;
+    min-height: 132px;
 
     padding: 20px;
 
-    border-radius: 19px;
+    border-radius: 18px;
 
     border:
         1px solid
@@ -332,31 +277,31 @@ body,
         var(--sp-surface);
 
     box-shadow:
-        0 8px 28px
-        rgba(0,0,0,0.055);
+        0 8px 24px
+        rgba(0,0,0,.055);
 
     transition:
-        transform .18s ease,
-        border-color .18s ease,
-        box-shadow .18s ease;
+        transform .16s ease,
+        box-shadow .16s ease,
+        border-color .16s ease;
 }
 
 
 .sp-metric-card:hover {
 
     transform:
-        translateY(-3px);
+        translateY(-2px);
 
     border-color:
         color-mix(
             in srgb,
-            var(--sp-primary) 45%,
+            #4f946a 44%,
             var(--sp-border)
         );
 
     box-shadow:
-        0 12px 32px
-        rgba(0,0,0,0.09);
+        0 12px 30px
+        rgba(0,0,0,.09);
 }
 
 
@@ -375,11 +320,9 @@ body,
 
     font-size: 27px;
 
-    line-height: 1.15;
-
     font-weight: 850;
 
-    letter-spacing: -0.4px;
+    line-height: 1.15;
 
     margin-bottom: 6px;
 }
@@ -397,74 +340,20 @@ body,
 
 
 /* =========================================================
-   AI PANEL
-   ========================================================= */
-
-.sp-ai-panel {
-
-    padding: 21px 23px;
-
-    margin:
-        10px 0 19px 0;
-
-    border-radius: 19px;
-
-    border:
-        1px solid
-        color-mix(
-            in srgb,
-            var(--sp-primary) 30%,
-            var(--sp-border)
-        );
-
-    background:
-        var(--sp-primary-soft);
-}
-
-
-.sp-ai-title {
-
-    color:
-        var(--sp-text);
-
-    font-size: 19px;
-
-    font-weight: 850;
-
-    margin-bottom: 5px;
-}
-
-
-.sp-ai-description {
-
-    color:
-        var(--sp-muted);
-
-    font-size: 13px;
-
-    line-height: 1.55;
-}
-
-
-/* =========================================================
-   STATUS PILLS
+   STATUS BADGES
    ========================================================= */
 
 .sp-status {
 
     display: inline-block;
 
-    padding:
-        5px 10px;
+    padding: 5px 10px;
 
-    border-radius:
-        999px;
+    border-radius: 999px;
 
-    font-size:
-        11px;
+    font-size: 11px;
 
-    font-weight:
-        800;
+    font-weight: 800;
 }
 
 
@@ -509,6 +398,55 @@ body,
 
 
 /* =========================================================
+   AI PANEL
+   ========================================================= */
+
+.sp-ai-panel {
+
+    padding: 20px 22px;
+
+    margin: 10px 0 18px 0;
+
+    border-radius: 18px;
+
+    border:
+        1px solid
+        color-mix(
+            in srgb,
+            #4f946a 32%,
+            var(--sp-border)
+        );
+
+    background:
+        var(--sp-green-soft);
+}
+
+
+.sp-ai-title {
+
+    color:
+        var(--sp-text);
+
+    font-size: 19px;
+
+    font-weight: 850;
+
+    margin-bottom: 5px;
+}
+
+
+.sp-ai-description {
+
+    color:
+        var(--sp-muted);
+
+    font-size: 13px;
+
+    line-height: 1.55;
+}
+
+
+/* =========================================================
    STREAMLIT CONTAINERS
    ========================================================= */
 
@@ -521,14 +459,8 @@ div[data-testid="stVerticalBlockBorderWrapper"] {
 }
 
 
-div[data-testid="stMetric"] {
-
-    border-radius: 15px;
-}
-
-
 /* =========================================================
-   BUTTONS
+   GENERAL BUTTON
    ========================================================= */
 
 .stButton > button,
@@ -539,7 +471,8 @@ div[data-testid="stMetric"] {
     font-weight: 650;
 
     transition:
-        all .16s ease;
+        transform .15s ease,
+        box-shadow .15s ease;
 }
 
 
@@ -550,8 +483,115 @@ div[data-testid="stMetric"] {
         translateY(-1px);
 
     box-shadow:
-        0 6px 20px
-        rgba(0,0,0,0.10);
+        0 6px 18px
+        rgba(0,0,0,.10);
+}
+
+
+/* =========================================================
+   FIXED DECIMAL COST INPUT
+   ========================================================= */
+
+/*
+Ringgit field expands toward the LEFT.
+The right edge stays beside the decimal point.
+*/
+
+input[aria-label="Ringgit amount"] {
+
+    text-align: right !important;
+
+    font-size: 18px !important;
+
+    font-weight: 700 !important;
+
+    font-variant-numeric:
+        tabular-nums;
+
+    letter-spacing: .4px;
+}
+
+
+/*
+Sen always remains after the fixed decimal.
+*/
+
+input[aria-label="Sen amount"] {
+
+    text-align: left !important;
+
+    font-size: 18px !important;
+
+    font-weight: 700 !important;
+
+    font-variant-numeric:
+        tabular-nums;
+
+    letter-spacing: .4px;
+}
+
+
+/*
+Fixed decimal point.
+It never moves.
+*/
+
+.sp-currency-dot {
+
+    width: 100%;
+
+    height: 38px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color:
+        var(--sp-text);
+
+    font-size: 28px;
+
+    line-height: 1;
+
+    font-weight: 900;
+
+    padding-top: 4px;
+}
+
+
+.sp-rm-label {
+
+    height: 38px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: flex-end;
+
+    color:
+        var(--sp-text);
+
+    font-size: 15px;
+
+    font-weight: 800;
+}
+
+
+.sp-currency-help {
+
+    color:
+        var(--sp-muted);
+
+    font-size: 11px;
+
+    line-height: 1.45;
+
+    margin-top: -5px;
+
+    margin-bottom: 10px;
 }
 
 
@@ -564,7 +604,7 @@ section[data-testid="stSidebar"] {
     background:
         color-mix(
             in srgb,
-            var(--secondary-background-color) 94%,
+            var(--secondary-background-color) 96%,
             var(--background-color)
         );
 
@@ -577,7 +617,7 @@ section[data-testid="stSidebar"] {
 section[data-testid="stSidebar"]
 div[data-testid="stSidebarContent"] {
 
-    padding-top: 0.45rem;
+    padding-top: .45rem;
 }
 
 
@@ -589,8 +629,7 @@ div[data-testid="stSidebarContent"] {
 
     padding: 16px;
 
-    margin:
-        3px 2px 17px 2px;
+    margin: 3px 2px 17px 2px;
 
     border-radius: 18px;
 
@@ -601,7 +640,7 @@ div[data-testid="stSidebarContent"] {
     background:
         linear-gradient(
             135deg,
-            var(--sp-primary-soft),
+            var(--sp-green-soft),
             var(--sp-surface)
         );
 }
@@ -623,8 +662,6 @@ div[data-testid="stSidebarContent"] {
 
     height: 43px;
 
-    flex-shrink: 0;
-
     display: flex;
 
     align-items: center;
@@ -638,13 +675,13 @@ div[data-testid="stSidebarContent"] {
     background:
         linear-gradient(
             135deg,
-            #5a9a73,
+            #65aa7d,
             #2f704f
         );
 
     box-shadow:
-        0 7px 20px
-        rgba(0,0,0,0.18);
+        0 7px 18px
+        rgba(0,0,0,.18);
 }
 
 
@@ -678,21 +715,18 @@ div[data-testid="stSidebarContent"] {
 
     margin-top: 12px;
 
-    padding:
-        5px 9px;
+    padding: 5px 9px;
 
-    border-radius:
-        999px;
-
-    color:
-        #228b4e;
+    border-radius: 999px;
 
     background:
         color-mix(
             in srgb,
-            #54d381 16%,
+            #54d381 15%,
             var(--sp-surface)
         );
+
+    color: #269655;
 
     font-size: 10px;
 
@@ -703,7 +737,7 @@ div[data-testid="stSidebarContent"] {
 
 
 /* =========================================================
-   SIDEBAR LABEL
+   SIDEBAR SECTION LABEL
    ========================================================= */
 
 .sp-sidebar-section {
@@ -711,8 +745,7 @@ div[data-testid="stSidebarContent"] {
     color:
         var(--sp-muted);
 
-    margin:
-        17px 10px 6px 10px;
+    margin: 17px 10px 6px 10px;
 
     font-size: 10px;
 
@@ -725,115 +758,106 @@ div[data-testid="stSidebarContent"] {
 
 
 /* =========================================================
-   SIDEBAR RADIO -> WEB NAVIGATION
+   SIDEBAR BUTTON NAVIGATION
    ========================================================= */
 
 section[data-testid="stSidebar"]
-div[role="radiogroup"] {
+.stButton > button {
 
-    gap: 4px;
-}
+    width: 100% !important;
 
+    min-height: 42px;
 
-section[data-testid="stSidebar"]
-label[data-baseweb="radio"] {
+    justify-content:
+        flex-start !important;
+
+    text-align:
+        left !important;
 
     padding:
-        10px 12px;
+        .55rem .8rem !important;
 
     margin:
-        1px 2px;
+        2px 0 !important;
 
-    border-radius: 12px;
+    border-radius:
+        11px !important;
 
     border:
         1px solid
-        transparent;
+        transparent !important;
 
-    cursor: pointer;
+    background:
+        transparent !important;
 
-    transition:
-        all .16s ease;
+    color:
+        var(--sp-text) !important;
+
+    box-shadow:
+        none !important;
 }
 
 
 section[data-testid="stSidebar"]
-label[data-baseweb="radio"]:hover {
-
-    background:
-        var(--sp-hover);
-
-    border-color:
-        var(--sp-border);
+.stButton > button:hover {
 
     transform:
         translateX(2px);
-}
-
-
-/* Hide default radio circle */
-
-section[data-testid="stSidebar"]
-label[data-baseweb="radio"]
-div[role="radio"] {
-
-    display: none;
-}
-
-
-/* Selected navigation item */
-
-section[data-testid="stSidebar"]
-label[data-baseweb="radio"]:has(input:checked) {
 
     background:
-        var(--sp-primary-soft);
+        var(--sp-hover) !important;
+
+    border-color:
+        var(--sp-border) !important;
+}
+
+
+section[data-testid="stSidebar"]
+.stButton > button[kind="primary"] {
+
+    background:
+        linear-gradient(
+            90deg,
+            color-mix(
+                in srgb,
+                #4f946a 24%,
+                var(--sp-surface)
+            ),
+            color-mix(
+                in srgb,
+                #4f946a 8%,
+                var(--sp-surface)
+            )
+        ) !important;
 
     border-color:
         color-mix(
             in srgb,
-            var(--sp-primary) 30%,
+            #4f946a 32%,
             var(--sp-border)
-        );
+        ) !important;
 
     box-shadow:
         inset 3px 0 0
-        var(--sp-primary);
-}
-
-
-section[data-testid="stSidebar"]
-label[data-baseweb="radio"] p {
+        #4f946a !important;
 
     color:
-        var(--sp-text);
+        var(--sp-text) !important;
 
-    font-size: 14px;
-
-    font-weight: 570;
-}
-
-
-section[data-testid="stSidebar"]
-label[data-baseweb="radio"]:has(input:checked) p {
-
-    color:
-        var(--sp-text);
-
-    font-weight: 760;
+    font-weight:
+        780 !important;
 }
 
 
 /* =========================================================
-   SIDEBAR AI STATUS
+   OLLAMA STATUS
    ========================================================= */
 
 .sp-ai-status {
 
     padding: 14px;
 
-    margin:
-        7px 2px;
+    margin: 7px 2px;
 
     border-radius: 15px;
 
@@ -879,7 +903,7 @@ label[data-baseweb="radio"]:has(input:checked) p {
 
     box-shadow:
         0 0 0 4px
-        rgba(70,216,117,0.13);
+        rgba(70,216,117,.13);
 }
 
 
@@ -917,8 +941,7 @@ label[data-baseweb="radio"]:has(input:checked) p {
 
     text-align: center;
 
-    padding:
-        18px 4px 5px 4px;
+    padding: 18px 4px 5px 4px;
 
     font-size: 10px;
 
@@ -934,23 +957,27 @@ section[data-testid="stSidebar"] hr {
 
 
 /* =========================================================
-   LIGHT MODE EXTRA POLISH
+   LIGHT MODE
    ========================================================= */
 
 @media (prefers-color-scheme: light) {
 
-    .sp-metric-card {
+    .sp-hero {
 
-        box-shadow:
-            0 8px 25px
-            rgba(30,60,40,0.055);
+        background:
+            linear-gradient(
+                135deg,
+                #174b35 0%,
+                #2d7250 58%,
+                #6f9b7c 100%
+            );
     }
 
 }
 
 
 /* =========================================================
-   DARK MODE EXTRA POLISH
+   DARK MODE
    ========================================================= */
 
 @media (prefers-color-scheme: dark) {
@@ -960,9 +987,9 @@ section[data-testid="stSidebar"] hr {
         background:
             linear-gradient(
                 135deg,
-                #102d23 0%,
-                #1c563b 55%,
-                #426f53 100%
+                #0f3326 0%,
+                #1d573c 58%,
+                #476f56 100%
             );
     }
 
@@ -970,7 +997,7 @@ section[data-testid="stSidebar"] hr {
 
         box-shadow:
             0 9px 28px
-            rgba(0,0,0,0.18);
+            rgba(0,0,0,.18);
     }
 
 }
@@ -979,8 +1006,9 @@ section[data-testid="stSidebar"] hr {
 """
 
 
-# st.html avoids the raw <div> problem
-st.html(CUSTOM_CSS)
+st.html(
+    CUSTOM_CSS
+)
 
 
 # ============================================================
@@ -989,21 +1017,29 @@ st.html(CUSTOM_CSS)
 
 DEFAULT_SESSION = {
 
-    "pantry_items": [],
+    "pantry_items":
+        [],
 
-    "activity_log": [],
+    "activity_log":
+        [],
 
-    "ai_meal_plan": None,
+    "ai_meal_plan":
+        None,
 
-    "ai_plan_raw": "",
+    "ai_plan_raw":
+        "",
 
-    "ai_plan_error": None,
+    "ai_plan_error":
+        None,
 
-    "ai_plan_signature": "",
+    "ai_plan_signature":
+        "",
 
-    "ai_attempt_signature": "",
+    "ai_attempt_signature":
+        "",
 
-    "ai_last_updated": None,
+    "ai_last_updated":
+        None,
 
     "planner_preference":
         "Practical everyday meals",
@@ -1019,6 +1055,9 @@ DEFAULT_SESSION = {
 
     "flash_message":
         "",
+
+    "active_page":
+        "Overview",
 }
 
 
@@ -1042,25 +1081,15 @@ for key, value in (
 CATEGORIES = [
 
     "Dairy",
-
     "Meat",
-
     "Vegetables",
-
     "Fruits",
-
     "Bakery",
-
     "Frozen Food",
-
     "Beverages",
-
     "Snacks",
-
     "Canned Food",
-
     "Dry Food",
-
     "Others",
 ]
 
@@ -1068,21 +1097,13 @@ CATEGORIES = [
 UNITS = [
 
     "Piece",
-
     "Pack",
-
     "Bottle",
-
     "Can",
-
     "Box",
-
     "kg",
-
     "g",
-
     "L",
-
     "ml",
 ]
 
@@ -1090,14 +1111,44 @@ UNITS = [
 STORAGE_LOCATIONS = [
 
     "Refrigerator",
-
     "Freezer",
-
     "Pantry",
-
     "Kitchen Cabinet",
-
     "Others",
+]
+
+
+NAV_ITEMS = [
+
+    (
+        "Overview",
+        "🏠"
+    ),
+
+    (
+        "Food Tracker",
+        "📍"
+    ),
+
+    (
+        "Add Item",
+        "➕"
+    ),
+
+    (
+        "Expiry Timeline",
+        "📅"
+    ),
+
+    (
+        "AI Meal Planner",
+        "✨"
+    ),
+
+    (
+        "Insights",
+        "📊"
+    ),
 ]
 
 
@@ -1219,7 +1270,7 @@ def status_badge(
 
 
 # ============================================================
-# ACTIVITY TRACKING
+# ACTIVITY
 # ============================================================
 
 def add_activity(
@@ -1380,7 +1431,7 @@ def expiry_message(
 
 
 # ============================================================
-# SHELF LIFE PROGRESS
+# SHELF LIFE
 # ============================================================
 
 def shelf_progress(
@@ -1544,8 +1595,10 @@ def create_dataframe():
         )
 
 
-    return pd.DataFrame(
-        rows
+    return (
+        pd.DataFrame(
+            rows
+        )
     )
 
 
@@ -1612,8 +1665,7 @@ def mark_item(
                 add_activity(
                     f"🗑️ "
                     f"{item['item_name']} "
-                    f"was recorded "
-                    f"as wasted."
+                    f"was recorded as wasted."
                 )
 
 
@@ -1624,7 +1676,7 @@ def delete_item(
     item_id
 ):
 
-    name = None
+    item_name = None
 
 
     for item in (
@@ -1643,7 +1695,7 @@ def delete_item(
         ):
 
 
-            name = (
+            item_name = (
                 item[
                     "item_name"
                 ]
@@ -1674,14 +1726,13 @@ def delete_item(
     ]
 
 
-    if name:
+    if item_name:
 
 
         add_activity(
             f"❌ "
-            f"{name} "
-            f"was removed "
-            f"from the pantry."
+            f"{item_name} "
+            f"was removed."
         )
 
 
@@ -1821,7 +1872,255 @@ def pantry_health_score(
 
 
 # ============================================================
-# OLLAMA CONFIG
+# FIXED DECIMAL COST INPUT
+# ============================================================
+
+def currency_input():
+
+    st.markdown(
+        "**Total Cost (RM) \\***"
+    )
+
+
+    rm_col, whole_col, dot_col, sen_col = (
+        st.columns(
+            [
+                0.55,
+                4.2,
+                0.32,
+                1.2
+            ],
+            gap="small"
+        )
+    )
+
+
+    with rm_col:
+
+
+        st.html(
+            """
+            <div class="sp-rm-label">
+                RM
+            </div>
+            """
+        )
+
+
+    with whole_col:
+
+
+        ringgit_text = (
+            st.text_input(
+
+                "Ringgit amount",
+
+                value="",
+
+                placeholder="0",
+
+                label_visibility=
+                    "collapsed",
+
+                key=
+                    "cost_ringgit"
+            )
+        )
+
+
+    with dot_col:
+
+
+        st.html(
+            """
+            <div class="sp-currency-dot">
+                .
+            </div>
+            """
+        )
+
+
+    with sen_col:
+
+
+        sen_text = (
+            st.text_input(
+
+                "Sen amount",
+
+                value="00",
+
+                max_chars=2,
+
+                label_visibility=
+                    "collapsed",
+
+                key=
+                    "cost_sen"
+            )
+        )
+
+
+    st.html(
+        """
+        <div class="sp-currency-help">
+
+            The decimal point remains fixed.
+            Enter Ringgit on the left and
+            up to two sen digits on the right.
+
+        </div>
+        """
+    )
+
+
+    return (
+        ringgit_text,
+        sen_text
+    )
+
+
+# ============================================================
+# CURRENCY VALIDATION
+# ============================================================
+
+def parse_currency(
+    ringgit_text,
+    sen_text
+):
+
+    ringgit = (
+        str(
+            ringgit_text
+        )
+        .replace(
+            ",",
+            ""
+        )
+        .strip()
+    )
+
+
+    sen = (
+        str(
+            sen_text
+        )
+        .strip()
+    )
+
+
+    # Empty Ringgit = 0
+
+    if ringgit == "":
+
+        ringgit = "0"
+
+
+    # Empty sen = 00
+
+    if sen == "":
+
+        sen = "00"
+
+
+    # Ringgit must contain digits only
+
+    if not (
+        ringgit.isdigit()
+    ):
+
+
+        return (
+            None,
+            (
+                "Ringgit amount must "
+                "contain numbers only."
+            )
+        )
+
+
+    # Sen must contain digits only
+
+    if not (
+        sen.isdigit()
+    ):
+
+
+        return (
+            None,
+            (
+                "Sen amount must "
+                "contain numbers only."
+            )
+        )
+
+
+    # Max 2 sen digits
+
+    if len(
+        sen
+    ) > 2:
+
+
+        return (
+            None,
+            (
+                "Sen can contain "
+                "a maximum of 2 digits."
+            )
+        )
+
+
+    # 5 = 05 sen
+
+    sen = (
+        sen.zfill(
+            2
+        )
+    )
+
+
+    value = (
+
+        int(
+            ringgit
+        )
+
+        +
+
+        (
+            int(
+                sen
+            )
+            /
+            100
+        )
+    )
+
+
+    if value <= 0:
+
+
+        return (
+            None,
+            (
+                "Total cost must be "
+                "greater than RM 0.00."
+            )
+        )
+
+
+    return (
+        round(
+            value,
+            2
+        ),
+        None
+    )
+
+
+# ============================================================
+# OLLAMA
 # ============================================================
 
 def ollama_configured():
@@ -1858,17 +2157,18 @@ def get_ollama_model():
 
 
 # ============================================================
-# SMARTPANTRY AI SYSTEM PROMPT
+# AI SYSTEM BEHAVIOUR
 # ============================================================
 
 SMARTPANTRY_AI_SYSTEM = """
 You are SmartPantry's Autonomous Meal Planning Engine.
 
-You are not a general-purpose chatbot.
+You are not a general chatbot.
 
-You operate only inside the SmartPantry food tracking system.
+You operate only inside SmartPantry.
 
 SmartPantry itself determines:
+
 - expiry dates
 - days remaining
 - lifecycle status
@@ -1876,77 +2176,73 @@ SmartPantry itself determines:
 - storage location
 - whether food is Available, Consumed, Wasted or Expired
 
-Treat these supplied values as authoritative.
+Treat supplied tracking values as authoritative.
 
 YOUR RESPONSIBILITY
 
-You completely control the meal planning process.
+You completely control meal planning.
 
-For every current pantry situation, independently determine:
+For the current pantry situation determine:
 
 1. pantry urgency;
-2. foods that should be prioritised;
-3. how many meals should be planned, from 1 to 4;
-4. which meal should be prepared first;
-5. pantry ingredients allocated to each meal;
-6. additional ingredients that are actually necessary;
+2. foods to prioritise;
+3. 1 to 4 appropriate meals;
+4. meal order;
+5. pantry ingredient allocation;
+6. additional ingredients actually required;
 7. short practical preparation instructions;
 8. the most useful next action.
 
-FOOD PRIORITY
+PRIORITY
 
 Priority 1:
-Usable food with 0-2 days remaining.
+0-2 days remaining.
 
 Priority 2:
-Usable food with 3-7 days remaining.
+3-7 days remaining.
 
 Priority 3:
-Usable food with 8-14 days remaining.
+8-14 days remaining.
 
 Priority 4:
-Long-life foods.
+Long-life food.
 
-Your objective is to reduce avoidable household food waste.
+Your goal is to reduce avoidable household food waste.
 
-IMPORTANT RULES
+RULES
 
 Never recommend:
+
 - Consumed items
 - Wasted items
 - Expired items
 
 Never invent a pantry ingredient.
 
-Missing ingredients may be suggested,
-but they must be clearly listed as missing or optional.
+Ingredients not present must be listed under
+missing_ingredients.
 
 Minimise unnecessary purchases.
 
-Do not allocate a clearly limited ingredient
-to many meals unless the available quantity supports it.
+Use practical everyday meals.
 
-Use realistic everyday meals.
-
-Do not provide dieting, weight-loss,
-calorie restriction or body-weight advice.
+Do not give dieting, weight-loss,
+calorie-restriction or body-weight advice.
 
 FOOD SAFETY
 
-Expiry information alone does not prove that food is safe.
+Expiry information alone does not prove food is safe.
 
-For perishable foods, remind the user to check
-normal appearance, smell, freshness and storage condition.
+For perishable food remind users to check
+normal freshness, appearance, smell and storage condition.
 
-Do not recommend an item SmartPantry identifies as expired.
+Never recommend food SmartPantry marks as expired.
 
 OUTPUT
 
 Return ONLY valid JSON.
 
-Do not use markdown code fences.
-
-Use this exact structure:
+No markdown fences.
 
 {
   "situation_title": "short title",
@@ -1958,29 +2254,19 @@ Use this exact structure:
       "meal_name": "name",
       "priority": "Cook today | Cook next | Flexible",
       "why_now": "brief explanation",
-      "pantry_ingredients": [
-        "ingredient"
-      ],
-      "missing_ingredients": [
-        "ingredient"
-      ],
-      "preparation": [
-        "step",
-        "step",
-        "step"
-      ],
-      "food_safety_note": "short safety reminder"
+      "pantry_ingredients": ["ingredient"],
+      "missing_ingredients": ["ingredient"],
+      "preparation": ["step", "step", "step"],
+      "food_safety_note": "short reminder"
     }
   ],
   "next_action": "single most useful next action"
 }
-
-Return JSON only.
 """
 
 
 # ============================================================
-# AI PANTRY CONTEXT
+# AI CONTEXT
 # ============================================================
 
 def ai_pantry_context():
@@ -2012,14 +2298,7 @@ def ai_pantry_context():
             0
         )
     ].sort_values(
-        [
-            "Days Left",
-            "Priority"
-        ],
-        ascending=[
-            True,
-            False
-        ]
+        "Days Left"
     )
 
 
@@ -2087,11 +2366,11 @@ def ai_pantry_context():
 
 
 # ============================================================
-# OLLAMA CLOUD API
+# OLLAMA API CALL
 # ============================================================
 
 def call_ollama_cloud(
-    user_prompt
+    prompt
 ):
 
     if not (
@@ -2102,9 +2381,7 @@ def call_ollama_cloud(
         return (
             None,
             (
-                "Ollama Cloud is not configured. "
-                "Add OLLAMA_API_KEY to "
-                "Streamlit Secrets."
+                "Ollama Cloud is not configured."
             )
         )
 
@@ -2112,72 +2389,73 @@ def call_ollama_cloud(
     try:
 
 
-        response = (
-            requests.post(
+        response = requests.post(
 
-                "https://ollama.com/api/chat",
+            "https://ollama.com/api/chat",
 
-                headers={
-                    "Authorization":
-                        (
-                            "Bearer "
-                            +
-                            st.secrets[
-                                "OLLAMA_API_KEY"
-                            ]
-                        ),
+            headers={
 
-                    "Content-Type":
-                        "application/json"
-                },
+                "Authorization":
+                    (
+                        "Bearer "
+                        +
+                        st.secrets[
+                            "OLLAMA_API_KEY"
+                        ]
+                    ),
 
-                json={
-                    "model":
-                        get_ollama_model(),
+                "Content-Type":
+                    "application/json"
+            },
 
-                    "messages": [
+            json={
 
-                        {
-                            "role":
-                                "system",
+                "model":
+                    get_ollama_model(),
 
-                            "content":
-                                SMARTPANTRY_AI_SYSTEM
-                        },
+                "messages": [
 
-                        {
-                            "role":
-                                "user",
+                    {
+                        "role":
+                            "system",
 
-                            "content":
-                                user_prompt
-                        }
-                    ],
+                        "content":
+                            SMARTPANTRY_AI_SYSTEM
+                    },
 
-                    "stream":
-                        False,
+                    {
+                        "role":
+                            "user",
 
-                    "options": {
-                        "temperature":
-                            0.2
+                        "content":
+                            prompt
                     }
-                },
+                ],
 
-                timeout=90
-            )
+                "stream":
+                    False,
+
+                "options": {
+
+                    "temperature":
+                        0.2
+                }
+            },
+
+            timeout=90
         )
 
 
         response.raise_for_status()
 
 
-        result = (
+        data = (
             response.json()
         )
 
 
         return (
-            result[
+            data[
                 "message"
             ][
                 "content"
@@ -2186,45 +2464,17 @@ def call_ollama_cloud(
         )
 
 
-    except requests.exceptions.Timeout:
-
-
-        return (
-            None,
-            (
-                "Ollama Cloud took "
-                "too long to respond."
-            )
-        )
-
-
-    except requests.exceptions.RequestException as error:
-
-
-        return (
-            None,
-            (
-                "Ollama Cloud request "
-                f"failed: {error}"
-            )
-        )
-
-
     except Exception as error:
 
 
         return (
             None,
-            (
-                "Unable to read "
-                "the Ollama response: "
-                f"{error}"
-            )
+            f"AI request failed: {error}"
         )
 
 
 # ============================================================
-# JSON PARSER
+# AI JSON PARSER
 # ============================================================
 
 def parse_ai_json(
@@ -2312,7 +2562,7 @@ def parse_ai_json(
 
 
 # ============================================================
-# VALIDATE AI OUTPUT
+# VALIDATE AI PLAN
 # ============================================================
 
 def validate_ai_plan(
@@ -2343,7 +2593,7 @@ def validate_ai_plan(
         meals = []
 
 
-    cleaned_meals = []
+    cleaned = []
 
 
     for meal in (
@@ -2359,55 +2609,7 @@ def validate_ai_plan(
             continue
 
 
-        preparation = (
-            meal.get(
-                "preparation",
-                []
-            )
-        )
-
-
-        if not isinstance(
-            preparation,
-            list
-        ):
-
-            preparation = []
-
-
-        pantry_ingredients = (
-            meal.get(
-                "pantry_ingredients",
-                []
-            )
-        )
-
-
-        if not isinstance(
-            pantry_ingredients,
-            list
-        ):
-
-            pantry_ingredients = []
-
-
-        missing_ingredients = (
-            meal.get(
-                "missing_ingredients",
-                []
-            )
-        )
-
-
-        if not isinstance(
-            missing_ingredients,
-            list
-        ):
-
-            missing_ingredients = []
-
-
-        cleaned_meals.append(
+        cleaned.append(
             {
                 "meal_name":
                     str(
@@ -2434,25 +2636,28 @@ def validate_ai_plan(
                     ),
 
                 "pantry_ingredients":
-                    [
-                        str(x)
-                        for x
-                        in pantry_ingredients
-                    ],
+                    list(
+                        meal.get(
+                            "pantry_ingredients",
+                            []
+                        )
+                    ),
 
                 "missing_ingredients":
-                    [
-                        str(x)
-                        for x
-                        in missing_ingredients
-                    ],
+                    list(
+                        meal.get(
+                            "missing_ingredients",
+                            []
+                        )
+                    ),
 
                 "preparation":
-                    [
-                        str(x)
-                        for x
-                        in preparation
-                    ],
+                    list(
+                        meal.get(
+                            "preparation",
+                            []
+                        )
+                    ),
 
                 "food_safety_note":
                     str(
@@ -2466,6 +2671,7 @@ def validate_ai_plan(
 
 
     return {
+
         "situation_title":
             str(
                 plan.get(
@@ -2499,28 +2705,26 @@ def validate_ai_plan(
             ),
 
         "meals":
-            cleaned_meals,
+            cleaned,
 
         "next_action":
             str(
                 plan.get(
                     "next_action",
-                    (
-                        "Review your "
-                        "priority foods."
-                    )
+                    "Review priority food."
                 )
             )
     }
 
 
 # ============================================================
-# AI SITUATION SIGNATURE
+# AI SIGNATURE
 # ============================================================
 
 def planner_signature():
 
     payload = {
+
         "date":
             str(
                 date.today()
@@ -2546,15 +2750,12 @@ def planner_signature():
     }
 
 
-    raw = json.dumps(
-        payload,
-        sort_keys=True
-    )
-
-
     return (
         hashlib.sha256(
-            raw.encode(
+            json.dumps(
+                payload,
+                sort_keys=True
+            ).encode(
                 "utf-8"
             )
         ).hexdigest()
@@ -2583,16 +2784,6 @@ def generate_ai_plan(
         ] = None
 
 
-        st.session_state[
-            "ai_plan_error"
-        ] = None
-
-
-        st.session_state[
-            "ai_plan_signature"
-        ] = ""
-
-
         return False
 
 
@@ -2617,48 +2808,31 @@ def generate_ai_plan(
 
     st.session_state[
         "ai_attempt_signature"
-    ] = signature
+    ] = (
+        signature
+    )
 
 
     prompt = f"""
-SMARTPANTRY EVENT
-
-Reason for this evaluation:
+Reason:
 {reason}
 
-Today's date:
+Today:
 {date.today()}
 
-CURRENT USABLE PANTRY
-
+Current usable pantry:
 {json.dumps(pantry, indent=2)}
 
-PLANNER SETTINGS
-
-Meal preference:
+Preference:
 {st.session_state["planner_preference"]}
 
 Servings:
 {st.session_state["planner_servings"]}
 
-Preferred maximum preparation time:
+Maximum preparation time:
 {st.session_state["planner_time"]}
 
-Treat this as a completely new pantry situation.
-
-Autonomously determine:
-- pantry urgency
-- food priorities
-- number of meals
-- meal order
-- pantry ingredient allocation
-- missing ingredients
-- preparation approach
-- next best action
-
-Main objective:
-Reduce avoidable food waste.
-
+Create the best current SmartPantry meal strategy.
 Return only the required JSON.
 """
 
@@ -2676,7 +2850,9 @@ Return only the required JSON.
 
         st.session_state[
             "ai_plan_error"
-        ] = error
+        ] = (
+            error
+        )
 
 
         return False
@@ -2689,29 +2865,23 @@ Return only the required JSON.
     )
 
 
-    parsed = (
-        parse_ai_json(
-            result
-        )
-    )
-
-
-    parsed = (
+    plan = (
         validate_ai_plan(
-            parsed
+            parse_ai_json(
+                result
+            )
         )
     )
 
 
-    if parsed is None:
+    if plan is None:
 
 
         st.session_state[
             "ai_plan_error"
         ] = (
-            "The AI responded, "
-            "but SmartPantry could "
-            "not read the meal plan."
+            "SmartPantry could not read "
+            "the AI response."
         )
 
 
@@ -2721,7 +2891,7 @@ Return only the required JSON.
     st.session_state[
         "ai_meal_plan"
     ] = (
-        parsed
+        plan
     )
 
 
@@ -2746,8 +2916,7 @@ Return only the required JSON.
 
     add_activity(
         "🤖 AI Meal Planner "
-        "adapted to the latest "
-        "pantry situation."
+        "adapted its strategy."
     )
 
 
@@ -2755,7 +2924,7 @@ Return only the required JSON.
 
 
 # ============================================================
-# AUTOMATIC AI REPLANNING
+# AUTOMATIC AI
 # ============================================================
 
 def automatic_ai_update():
@@ -2783,19 +2952,19 @@ def automatic_ai_update():
         return
 
 
-    current_signature = (
+    signature = (
         planner_signature()
     )
 
 
     if (
-        current_signature
+        signature
         !=
         st.session_state[
             "ai_plan_signature"
         ]
         and
-        current_signature
+        signature
         !=
         st.session_state[
             "ai_attempt_signature"
@@ -2806,9 +2975,7 @@ def automatic_ai_update():
         generate_ai_plan(
             (
                 "SmartPantry detected "
-                "a new inventory, expiry, "
-                "date, lifecycle or "
-                "preference situation."
+                "a changed pantry situation."
             )
         )
 
@@ -2980,8 +3147,7 @@ def load_demo_data():
 
 
     add_activity(
-        "🧪 Demo pantry "
-        "inventory loaded."
+        "🧪 Demo pantry loaded."
     )
 
 
@@ -3013,8 +3179,8 @@ st.html(
             protect pantry value,
             reduce avoidable waste,
             and let an autonomous Ollama Cloud
-            planner adapt your meals when
-            circumstances change.
+            planner adapt your meals
+            when circumstances change.
 
         </div>
 
@@ -3072,22 +3238,48 @@ with st.sidebar:
     )
 
 
-    page = st.radio(
+    for (
+        label,
+        icon
+    ) in NAV_ITEMS:
 
-        "Navigation",
 
-        [
-            "🏠 Overview",
-            "📍 Food Tracker",
-            "➕ Add Item",
-            "📅 Expiry Timeline",
-            "✨ AI Meal Planner",
-            "📊 Insights"
-        ],
+        active = (
+            st.session_state[
+                "active_page"
+            ]
+            ==
+            label
+        )
 
-        label_visibility=
-            "collapsed"
-    )
+
+        if st.button(
+
+            f"{icon}  {label}",
+
+            key=
+                f"nav_{label}",
+
+            use_container_width=True,
+
+            type=
+                (
+                    "primary"
+                    if active
+                    else
+                    "secondary"
+                )
+        ):
+
+
+            st.session_state[
+                "active_page"
+            ] = (
+                label
+            )
+
+
+            st.rerun()
 
 
     st.html(
@@ -3119,9 +3311,8 @@ with st.sidebar:
 
 
             st.caption(
-                "The planner reacts "
-                "automatically when "
-                "pantry conditions change."
+                "Automatically adapts "
+                "when pantry conditions change."
             )
 
 
@@ -3129,12 +3320,13 @@ with st.sidebar:
 
 
             st.caption(
-                "Automatic AI "
-                "replanning is paused."
+                "Automatic planning paused."
             )
 
 
-    if ollama_configured():
+    if (
+        ollama_configured()
+    ):
 
 
         st.html(
@@ -3181,7 +3373,7 @@ with st.sidebar:
                 </div>
 
                 <div class="sp-ai-model">
-                    API key not configured
+                    Not configured
                 </div>
 
             </div>
@@ -3199,7 +3391,7 @@ with st.sidebar:
     ):
 
 
-        active_sidebar = (
+        active_food = (
             sidebar_df[
                 sidebar_df[
                     "Item Status"
@@ -3210,10 +3402,10 @@ with st.sidebar:
         )
 
 
-        risk_sidebar = (
-            active_sidebar[
+        risk_food = (
+            active_food[
                 (
-                    active_sidebar[
+                    active_food[
                         "Days Left"
                     ]
                     >=
@@ -3221,7 +3413,7 @@ with st.sidebar:
                 )
                 &
                 (
-                    active_sidebar[
+                    active_food[
                         "Days Left"
                     ]
                     <=
@@ -3248,7 +3440,7 @@ with st.sidebar:
         s1.metric(
             "Items",
             len(
-                active_sidebar
+                active_food
             )
         )
 
@@ -3256,7 +3448,7 @@ with st.sidebar:
         s2.metric(
             "Risk",
             len(
-                risk_sidebar
+                risk_food
             )
         )
 
@@ -3272,9 +3464,7 @@ with st.sidebar:
 
 
         if st.button(
-
             "🧪 Load Demo Pantry",
-
             use_container_width=True
         ):
 
@@ -3300,12 +3490,22 @@ with st.sidebar:
 
             <br>
 
-            Theme automatically follows
-            your Streamlit appearance.
+            Automatic light / dark appearance
 
         </div>
         """
     )
+
+
+# ============================================================
+# CURRENT PAGE
+# ============================================================
+
+page = (
+    st.session_state[
+        "active_page"
+    ]
+)
 
 
 # ============================================================
@@ -3332,29 +3532,26 @@ if (
 
 
 # ============================================================
-# AUTOMATIC AI CHECK
+# AUTOMATIC AI
 # ============================================================
 
 automatic_ai_update()
 
 
 # ============================================================
-# OVERVIEW PAGE
+# OVERVIEW
 # ============================================================
 
-if page == "🏠 Overview":
+if page == "Overview":
 
 
     page_header(
-
         "Pantry Command Centre",
-
         "Overview",
-
         (
             "See what needs attention, "
-            "what value is at risk, and "
-            "how SmartPantry is responding."
+            "what value is at risk, "
+            "and how SmartPantry is responding."
         )
     )
 
@@ -3368,9 +3565,7 @@ if page == "🏠 Overview":
 
 
         st.info(
-            "Your pantry is empty. "
-            "Add an item or use "
-            "the Demo Pantry."
+            "Your pantry is empty."
         )
 
 
@@ -3392,15 +3587,6 @@ if page == "🏠 Overview":
             ]
             ==
             "Consumed"
-        ]
-
-
-        wasted = df[
-            df[
-                "Item Status"
-            ]
-            ==
-            "Wasted"
         ]
 
 
@@ -3476,17 +3662,14 @@ if page == "🏠 Overview":
 
 
             st.progress(
-                health
-                /
-                100
+                health / 100
             )
 
 
             st.markdown(
                 f"## "
                 f"{health}/100 "
-                f"— "
-                f"{health_label}"
+                f"— {health_label}"
             )
 
 
@@ -3532,6 +3715,7 @@ if page == "🏠 Overview":
 
         with a:
 
+
             metric_card(
                 "🥫",
                 len(
@@ -3542,6 +3726,7 @@ if page == "🏠 Overview":
 
 
         with b:
+
 
             metric_card(
                 "🚨",
@@ -3554,6 +3739,7 @@ if page == "🏠 Overview":
 
         with c:
 
+
             metric_card(
                 "💼",
                 f"RM {pantry_value:.2f}",
@@ -3562,6 +3748,7 @@ if page == "🏠 Overview":
 
 
         with d:
+
 
             metric_card(
                 "💚",
@@ -3578,87 +3765,72 @@ if page == "🏠 Overview":
         )
 
 
-        if (
-            attention.empty
+        for _, row in (
+            attention
+            .head(5)
+            .iterrows()
         ):
 
 
-            st.success(
-                "No food currently "
-                "needs urgent attention."
-            )
-
-
-        else:
-
-
-            for _, row in (
-                attention
-                .head(5)
-                .iterrows()
+            with st.container(
+                border=True
             ):
 
 
-                with st.container(
-                    border=True
-                ):
+                x, y, z = (
+                    st.columns(
+                        [
+                            3,
+                            2,
+                            1
+                        ]
+                    )
+                )
 
 
-                    x, y, z = (
-                        st.columns(
-                            [
-                                3,
-                                2,
-                                1
+                with x:
+
+
+                    st.markdown(
+                        f"#### "
+                        f"{row['Food']}"
+                    )
+
+
+                    status_badge(
+                        row[
+                            "Expiry Status"
+                        ]
+                    )
+
+
+                with y:
+
+
+                    st.write(
+                        expiry_message(
+                            row[
+                                "Days Left"
                             ]
                         )
                     )
 
 
-                    with x:
+                    st.caption(
+                        f"{row['Quantity']} "
+                        f"{row['Unit']} "
+                        f"• {row['Storage']}"
+                    )
 
 
-                        st.markdown(
-                            f"#### "
-                            f"{row['Food']}"
-                        )
+                with z:
 
 
-                        status_badge(
-                            row[
-                                "Expiry Status"
-                            ]
-                        )
-
-
-                    with y:
-
-
-                        st.write(
-                            expiry_message(
-                                row[
-                                    "Days Left"
-                                ]
-                            )
-                        )
-
-
-                        st.caption(
-                            f"{row['Quantity']} "
-                            f"{row['Unit']} "
-                            f"• "
-                            f"{row['Storage']}"
-                        )
-
-
-                    with z:
-
-
-                        st.metric(
-                            "Value",
-                            f"RM "
-                            f"{row['Cost (RM)']:.2f}"
-                        )
+                    st.metric(
+                        "Value",
+                        f"RM "
+                        f"{row['Cost (RM)']:.2f}"
+                    )
 
 
         st.divider()
@@ -3674,16 +3846,8 @@ if page == "🏠 Overview":
 
                 <div class="sp-ai-description">
 
-                    SmartPantry continuously compares
-                    your current pantry with the
-                    previous situation.
-
-                    When food is added,
-                    consumed, wasted,
-                    removed, or moves closer
-                    to expiry, the Ollama planner
-                    can automatically rebuild
-                    the meal strategy.
+                    The planner automatically adapts
+                    when pantry conditions change.
 
                 </div>
 
@@ -3703,8 +3867,12 @@ if page == "🏠 Overview":
 
 
             st.markdown(
-                f"### "
-                f"{plan.get('situation_title', 'Current AI Plan')}"
+                "### "
+                +
+                plan.get(
+                    "situation_title",
+                    "Current AI Plan"
+                )
             )
 
 
@@ -3726,8 +3894,10 @@ if page == "🏠 Overview":
             )
 
 
-            if plan.get(
-                "planner_strategy"
+            if (
+                plan.get(
+                    "planner_strategy"
+                )
             ):
 
 
@@ -3738,13 +3908,6 @@ if page == "🏠 Overview":
                         "planner_strategy"
                     ]
                 )
-
-
-            st.caption(
-                f"{len(plan.get('meals', []))} "
-                f"meal(s) currently selected "
-                f"by the AI planner."
-            )
 
 
         elif (
@@ -3761,76 +3924,19 @@ if page == "🏠 Overview":
             )
 
 
-        else:
-
-
-            st.caption(
-                "No AI plan "
-                "is available yet."
-            )
-
-
-        st.divider()
-
-
-        st.markdown(
-            "### 🕘 Recent Activity"
-        )
-
-
-        if not (
-            st.session_state[
-                "activity_log"
-            ]
-        ):
-
-
-            st.caption(
-                "No activity yet."
-            )
-
-
-        else:
-
-
-            for event in (
-                st.session_state[
-                    "activity_log"
-                ][:6]
-            ):
-
-
-                st.write(
-                    f"**"
-                    f"{event['time']}"
-                    f"**"
-                )
-
-
-                st.caption(
-                    event[
-                        "message"
-                    ]
-                )
-
-
 # ============================================================
 # FOOD TRACKER
 # ============================================================
 
-elif page == "📍 Food Tracker":
+elif page == "Food Tracker":
 
 
     page_header(
-
         "Lifecycle Management",
-
         "Food Tracker",
-
         (
-            "Monitor every food item "
-            "through its complete "
-            "pantry lifecycle."
+            "Monitor each food item "
+            "through its pantry lifecycle."
         )
     )
 
@@ -3844,8 +3950,7 @@ elif page == "📍 Food Tracker":
 
 
         st.info(
-            "No food items "
-            "are currently tracked."
+            "No food items tracked."
         )
 
 
@@ -3866,9 +3971,7 @@ elif page == "📍 Food Tracker":
 
         category_filter = (
             f2.selectbox(
-
                 "Category",
-
                 [
                     "All"
                 ]
@@ -3886,16 +3989,11 @@ elif page == "📍 Food Tracker":
 
         status_filter = (
             f3.selectbox(
-
                 "Lifecycle Status",
-
                 [
                     "All",
-
                     "Available",
-
                     "Consumed",
-
                     "Wasted"
                 ]
             )
@@ -3956,10 +4054,7 @@ elif page == "📍 Food Tracker":
 
         filtered = (
             filtered.sort_values(
-                [
-                    "Item Status",
-                    "Days Left"
-                ]
+                "Days Left"
             )
         )
 
@@ -4044,10 +4139,9 @@ elif page == "📍 Food Tracker":
 
                     st.caption(
                         f"{row['Category']} "
-                        f"• "
-                        f"{row['Storage']} "
-                        f"• "
-                        f"RM {row['Cost (RM)']:.2f}"
+                        f"• {row['Storage']} "
+                        f"• RM "
+                        f"{row['Cost (RM)']:.2f}"
                     )
 
 
@@ -4082,29 +4176,7 @@ elif page == "📍 Food Tracker":
                     )
 
 
-                    p1, p2, p3 = (
-                        st.columns(3)
-                    )
-
-
-                    p1.caption(
-                        "Purchased\n"
-                        +
-                        str(
-                            row[
-                                "Purchase Date"
-                            ]
-                        )
-                    )
-
-
-                    p2.caption(
-                        f"{progress * 100:.0f}% "
-                        f"of tracked shelf life passed"
-                    )
-
-
-                    p3.caption(
+                    st.caption(
                         expiry_message(
                             row[
                                 "Days Left"
@@ -4119,16 +4191,13 @@ elif page == "📍 Food Tracker":
 
 
                     if b1.button(
-
                         "✅ Consumed",
-
                         key=
                             "consume_"
                             +
                             row[
                                 "ID"
                             ],
-
                         use_container_width=True
                     ):
 
@@ -4146,28 +4215,17 @@ elif page == "📍 Food Tracker":
                         ] = ""
 
 
-                        st.session_state[
-                            "flash_message"
-                        ] = (
-                            f"{row['Food']} "
-                            f"marked consumed."
-                        )
-
-
                         st.rerun()
 
 
                     if b2.button(
-
                         "🗑️ Wasted",
-
                         key=
                             "waste_"
                             +
                             row[
                                 "ID"
                             ],
-
                         use_container_width=True
                     ):
 
@@ -4185,28 +4243,17 @@ elif page == "📍 Food Tracker":
                         ] = ""
 
 
-                        st.session_state[
-                            "flash_message"
-                        ] = (
-                            f"{row['Food']} "
-                            f"marked wasted."
-                        )
-
-
                         st.rerun()
 
 
                     if b3.button(
-
                         "❌ Remove",
-
                         key=
                             "remove_"
                             +
                             row[
                                 "ID"
                             ],
-
                         use_container_width=True
                     ):
 
@@ -4223,14 +4270,6 @@ elif page == "📍 Food Tracker":
                         ] = ""
 
 
-                        st.session_state[
-                            "flash_message"
-                        ] = (
-                            f"{row['Food']} "
-                            f"removed."
-                        )
-
-
                         st.rerun()
 
 
@@ -4238,19 +4277,15 @@ elif page == "📍 Food Tracker":
 # ADD ITEM
 # ============================================================
 
-elif page == "➕ Add Item":
+elif page == "Add Item":
 
 
     page_header(
-
         "Inventory Entry",
-
         "Add Food",
-
         (
-            "Add a pantry item "
-            "and SmartPantry will immediately "
-            "begin monitoring its lifecycle."
+            "Add a pantry item and "
+            "start lifecycle tracking."
         )
     )
 
@@ -4336,15 +4371,10 @@ elif page == "➕ Add Item":
                 )
 
 
-                cost = (
-                    st.number_input(
-                        "Total Cost (RM)",
-                        min_value=0.0,
-                        value=0.0,
-                        step=0.50,
-                        format="%.2f"
-                    )
-                )
+                (
+                    ringgit_text,
+                    sen_text
+                ) = currency_input()
 
 
                 storage = (
@@ -4358,12 +4388,22 @@ elif page == "➕ Add Item":
             submitted = (
                 st.form_submit_button(
                     "➕ Add to SmartPantry",
-                    use_container_width=True
+                    use_container_width=True,
+                    type="primary"
                 )
             )
 
 
             if submitted:
+
+
+                (
+                    cost,
+                    cost_error
+                ) = parse_currency(
+                    ringgit_text,
+                    sen_text
+                )
 
 
                 if not (
@@ -4386,8 +4426,17 @@ elif page == "➕ Add Item":
 
                     st.error(
                         "Expiry date cannot "
-                        "be before "
-                        "purchase date."
+                        "be before purchase date."
+                    )
+
+
+                elif (
+                    cost_error
+                ):
+
+
+                    st.error(
+                        cost_error
                     )
 
 
@@ -4428,9 +4477,7 @@ elif page == "➕ Add Item":
                                 ),
 
                             "cost":
-                                float(
-                                    cost
-                                ),
+                                cost,
 
                             "storage":
                                 storage,
@@ -4471,19 +4518,15 @@ elif page == "➕ Add Item":
 # EXPIRY TIMELINE
 # ============================================================
 
-elif page == "📅 Expiry Timeline":
+elif page == "Expiry Timeline":
 
 
     page_header(
-
         "Time-Based Tracking",
-
         "Expiry Timeline",
-
         (
-            "Organise pantry items "
-            "by how soon they need "
-            "your attention."
+            "See food grouped by "
+            "expiry urgency."
         )
     )
 
@@ -4497,7 +4540,7 @@ elif page == "📅 Expiry Timeline":
 
 
         st.info(
-            "No tracked food yet."
+            "No tracked food."
         )
 
 
@@ -4522,7 +4565,6 @@ elif page == "📅 Expiry Timeline":
 
             (
                 "⚫ Expired",
-
                 available[
                     available[
                         "Days Left"
@@ -4534,7 +4576,6 @@ elif page == "📅 Expiry Timeline":
 
             (
                 "🔴 Today",
-
                 available[
                     available[
                         "Days Left"
@@ -4546,7 +4587,6 @@ elif page == "📅 Expiry Timeline":
 
             (
                 "🟠 Tomorrow",
-
                 available[
                     available[
                         "Days Left"
@@ -4558,7 +4598,6 @@ elif page == "📅 Expiry Timeline":
 
             (
                 "🟡 Next 7 Days",
-
                 available[
                     (
                         available[
@@ -4580,7 +4619,6 @@ elif page == "📅 Expiry Timeline":
 
             (
                 "🟢 Later",
-
                 available[
                     available[
                         "Days Left"
@@ -4592,9 +4630,10 @@ elif page == "📅 Expiry Timeline":
         ]
 
 
-        for title, group in (
-            groups
-        ):
+        for (
+            title,
+            group
+        ) in groups:
 
 
             st.markdown(
@@ -4624,7 +4663,7 @@ elif page == "📅 Expiry Timeline":
                     ):
 
 
-                        t1, t2, t3 = (
+                        c1, c2, c3 = (
                             st.columns(
                                 [
                                     3,
@@ -4635,24 +4674,21 @@ elif page == "📅 Expiry Timeline":
                         )
 
 
-                        with t1:
+                        c1.markdown(
+                            f"**"
+                            f"{row['Food']}"
+                            f"**"
+                        )
 
 
-                            st.markdown(
-                                f"**"
-                                f"{row['Food']}"
-                                f"**"
-                            )
+                        c1.caption(
+                            f"{row['Category']} "
+                            f"• "
+                            f"{row['Storage']}"
+                        )
 
 
-                            st.caption(
-                                f"{row['Category']} "
-                                f"• "
-                                f"{row['Storage']}"
-                            )
-
-
-                        t2.write(
+                        c2.write(
                             expiry_message(
                                 row[
                                     "Days Left"
@@ -4661,7 +4697,7 @@ elif page == "📅 Expiry Timeline":
                         )
 
 
-                        t3.write(
+                        c3.write(
                             f"{row['Quantity']} "
                             f"{row['Unit']}"
                         )
@@ -4671,19 +4707,15 @@ elif page == "📅 Expiry Timeline":
 # AI MEAL PLANNER
 # ============================================================
 
-elif page == "✨ AI Meal Planner":
+elif page == "AI Meal Planner":
 
 
     page_header(
-
         "Ollama Cloud",
-
         "Autonomous Meal Planner",
-
         (
-            "SmartPantry provides verified "
-            "pantry tracking data while "
-            "the AI controls the meal strategy."
+            "The AI controls the "
+            "current meal strategy."
         )
     )
 
@@ -4698,16 +4730,8 @@ elif page == "✨ AI Meal Planner":
 
             <div class="sp-ai-description">
 
-                The AI decides meal count,
-                food priority,
-                meal order,
-                ingredient allocation,
-                optional purchases,
-                preparation guidance,
-                and the next recommended action.
-
-                When pantry circumstances change,
-                the plan can automatically change too.
+                Meal selection automatically
+                adapts to your current pantry.
 
             </div>
 
@@ -4732,9 +4756,7 @@ elif page == "✨ AI Meal Planner":
                     value=
                         st.session_state[
                             "planner_preference"
-                        ],
-                    placeholder=
-                        "Example: quick meals"
+                        ]
                 )
             )
 
@@ -4755,11 +4777,8 @@ elif page == "✨ AI Meal Planner":
             time_options = [
 
                 "15 minutes",
-
                 "30 minutes",
-
                 "45 minutes",
-
                 "60 minutes"
             ]
 
@@ -4771,34 +4790,29 @@ elif page == "✨ AI Meal Planner":
             )
 
 
-            time_index = (
-
-                time_options.index(
-                    current_time
-                )
-
-                if current_time
-                in time_options
-
-                else 1
-            )
-
-
             selected_time = (
                 st.selectbox(
                     "Maximum Preparation Time",
                     time_options,
                     index=
-                        time_index
+                        (
+                            time_options.index(
+                                current_time
+                            )
+
+                            if current_time
+                            in time_options
+
+                            else 1
+                        )
                 )
             )
 
 
             if st.form_submit_button(
-
                 "Save & Recalculate",
-
-                use_container_width=True
+                use_container_width=True,
+                type="primary"
             ):
 
 
@@ -4806,7 +4820,9 @@ elif page == "✨ AI Meal Planner":
                     "planner_preference"
                 ] = (
                     preference.strip()
+
                     or
+
                     "Practical everyday meals"
                 )
 
@@ -4830,12 +4846,6 @@ elif page == "✨ AI Meal Planner":
                 ] = ""
 
 
-                add_activity(
-                    "⚙️ AI planner "
-                    "preferences changed."
-                )
-
-
                 st.rerun()
 
 
@@ -4848,85 +4858,43 @@ elif page == "✨ AI Meal Planner":
 
 
         st.warning(
-            "There are no usable "
-            "non-expired foods "
-            "for meal planning."
+            "No usable non-expired "
+            "food is available."
         )
 
 
     else:
 
 
-        r1, r2 = (
-            st.columns(
-                [
-                    1,
-                    2
-                ]
-            )
+        if st.button(
+            "🔄 Re-plan Now",
+            type="primary"
+        ):
+
+
+            with st.spinner(
+                "Ollama Cloud is "
+                "analysing the pantry..."
+            ):
+
+
+                generate_ai_plan(
+                    (
+                        "User requested "
+                        "a fresh plan."
+                    ),
+                    force=True
+                )
+
+
+            st.rerun()
+
+
+        plan = (
+            st.session_state[
+                "ai_meal_plan"
+            ]
         )
-
-
-        with r1:
-
-
-            if st.button(
-
-                "🔄 Re-plan Now",
-
-                use_container_width=True
-            ):
-
-
-                with st.spinner(
-                    "Ollama Cloud is "
-                    "analysing your pantry..."
-                ):
-
-
-                    generate_ai_plan(
-                        (
-                            "The user manually "
-                            "requested a completely "
-                            "fresh pantry analysis."
-                        ),
-                        force=True
-                    )
-
-
-                st.rerun()
-
-
-        with r2:
-
-
-            if (
-                st.session_state[
-                    "ai_last_updated"
-                ]
-            ):
-
-
-                st.info(
-                    "Last AI adaptation: "
-                    +
-                    st.session_state[
-                        "ai_last_updated"
-                    ].strftime(
-                        "%d %b %Y • %H:%M"
-                    )
-                )
-
-
-            else:
-
-
-                st.info(
-                    f"{len(pantry)} "
-                    f"usable item(s) "
-                    f"are available "
-                    f"for AI planning."
-                )
 
 
         if (
@@ -4943,79 +4911,37 @@ elif page == "✨ AI Meal Planner":
             )
 
 
-            if (
-                st.session_state[
-                    "ai_plan_raw"
-                ]
-            ):
-
-
-                with st.expander(
-                    "Technical AI response"
-                ):
-
-
-                    st.code(
-                        st.session_state[
-                            "ai_plan_raw"
-                        ]
-                    )
-
-
-        plan = (
-            st.session_state[
-                "ai_meal_plan"
-            ]
-        )
-
-
         if plan:
 
 
             st.divider()
 
 
-            s1, s2 = (
-                st.columns(
-                    [
-                        1,
-                        2
-                    ]
+            st.metric(
+                "Situation",
+                plan.get(
+                    "situation_level",
+                    "Moderate"
                 )
             )
 
 
-            with s1:
-
-
-                st.metric(
-                    "Situation",
-                    plan.get(
-                        "situation_level",
-                        "Moderate"
-                    )
+            st.markdown(
+                "### "
+                +
+                plan.get(
+                    "situation_title",
+                    "Current Plan"
                 )
+            )
 
 
-            with s2:
-
-
-                st.markdown(
-                    "### "
-                    +
-                    plan.get(
-                        "situation_title",
-                        "Current Pantry Strategy"
-                    )
+            st.write(
+                plan.get(
+                    "situation_summary",
+                    ""
                 )
-
-
-                st.write(
-                    plan.get(
-                        "situation_summary",
-                        ""
-                    )
-                )
+            )
 
 
             if (
@@ -5042,18 +4968,12 @@ elif page == "✨ AI Meal Planner":
             )
 
 
-            st.markdown(
-                f"### 🍽️ "
-                f"{len(meals)} "
-                f"AI-Selected Meal(s)"
-            )
-
-
-            for number, meal in (
-                enumerate(
-                    meals,
-                    start=1
-                )
+            for (
+                number,
+                meal
+            ) in enumerate(
+                meals,
+                start=1
             ):
 
 
@@ -5062,48 +4982,20 @@ elif page == "✨ AI Meal Planner":
                 ):
 
 
-                    m1, m2 = (
-                        st.columns(
-                            [
-                                4,
-                                1
-                            ]
-                        )
+                    st.markdown(
+                        f"### "
+                        f"{number}. "
+                        f"{meal.get('meal_name', 'Meal')}"
                     )
 
 
-                    with m1:
-
-
-                        st.markdown(
-                            f"### "
-                            f"{number}. "
-                            f"{meal.get('meal_name', 'Meal')}"
-                        )
-
-
-                    with m2:
-
-
-                        st.caption(
-                            "PRIORITY"
-                        )
-
-
-                        st.write(
-                            "**"
-                            +
-                            meal.get(
-                                "priority",
-                                "Flexible"
-                            )
-                            +
-                            "**"
-                        )
-
-
                     st.write(
-                        "**Why now**"
+                        "**Priority:** "
+                        +
+                        meal.get(
+                            "priority",
+                            "Flexible"
+                        )
                     )
 
 
@@ -5128,34 +5020,20 @@ elif page == "✨ AI Meal Planner":
                         )
 
 
-                        pantry_used = (
+                        for ingredient in (
                             meal.get(
                                 "pantry_ingredients",
                                 []
                             )
-                        )
+                        ):
 
 
-                        if pantry_used:
-
-
-                            for ingredient in (
-                                pantry_used
-                            ):
-
-
-                                st.write(
-                                    "✓ "
-                                    +
+                            st.write(
+                                "✓ "
+                                +
+                                str(
                                     ingredient
                                 )
-
-
-                        else:
-
-
-                            st.caption(
-                                "No pantry items listed."
                             )
 
 
@@ -5186,7 +5064,9 @@ elif page == "✨ AI Meal Planner":
                                 st.write(
                                     "• "
                                     +
-                                    ingredient
+                                    str(
+                                        ingredient
+                                    )
                                 )
 
 
@@ -5214,7 +5094,7 @@ elif page == "✨ AI Meal Planner":
                         ):
 
 
-                            for index, step in (
+                            for i, step in (
                                 enumerate(
                                     preparation,
                                     start=1
@@ -5223,30 +5103,9 @@ elif page == "✨ AI Meal Planner":
 
 
                                 st.write(
-                                    f"{index}. "
+                                    f"{i}. "
                                     f"{step}"
                                 )
-
-
-                    safety_note = (
-                        meal.get(
-                            "food_safety_note",
-                            ""
-                        )
-                    )
-
-
-                    if safety_note:
-
-
-                        st.caption(
-                            "Food safety: "
-                            +
-                            safety_note
-                        )
-
-
-            st.divider()
 
 
             st.success(
@@ -5254,25 +5113,8 @@ elif page == "✨ AI Meal Planner":
                 +
                 plan.get(
                     "next_action",
-                    (
-                        "Review the foods "
-                        "needing attention."
-                    )
+                    "Review priority food."
                 )
-            )
-
-
-        elif not (
-            st.session_state[
-                "ai_plan_error"
-            ]
-        ):
-
-
-            st.info(
-                "No plan has been "
-                "generated yet. "
-                "Select **Re-plan Now**."
             )
 
 
@@ -5280,19 +5122,15 @@ elif page == "✨ AI Meal Planner":
 # INSIGHTS
 # ============================================================
 
-elif page == "📊 Insights":
+elif page == "Insights":
 
 
     page_header(
-
         "Performance Analytics",
-
         "Insights",
-
         (
-            "See how much food you save, "
-            "how much value is protected, "
-            "and where waste occurs."
+            "Track food saved, "
+            "waste and pantry performance."
         )
     )
 
@@ -5306,8 +5144,7 @@ elif page == "📊 Insights":
 
 
         st.info(
-            "Add pantry data "
-            "to view analytics."
+            "Add pantry data first."
         )
 
 
@@ -5342,17 +5179,20 @@ elif page == "📊 Insights":
 
 
         completed = (
+
             len(
                 consumed
             )
+
             +
+
             len(
                 wasted
             )
         )
 
 
-        avoidance_rate = (
+        avoidance = (
 
             len(
                 consumed
@@ -5368,7 +5208,7 @@ elif page == "📊 Insights":
         )
 
 
-        value_saved = (
+        saved_value = (
             consumed[
                 "Cost (RM)"
             ].sum()
@@ -5389,6 +5229,7 @@ elif page == "📊 Insights":
 
         with x1:
 
+
             metric_card(
                 "🌱",
                 len(
@@ -5400,14 +5241,16 @@ elif page == "📊 Insights":
 
         with x2:
 
+
             metric_card(
                 "💚",
-                f"RM {value_saved:.2f}",
+                f"RM {saved_value:.2f}",
                 "Value Saved"
             )
 
 
         with x3:
+
 
             metric_card(
                 "🗑️",
@@ -5418,14 +5261,12 @@ elif page == "📊 Insights":
 
         with x4:
 
+
             metric_card(
                 "📈",
-                f"{avoidance_rate:.1f}%",
+                f"{avoidance:.1f}%",
                 "Waste Avoidance"
             )
-
-
-        st.divider()
 
 
         if completed:
@@ -5443,7 +5284,6 @@ elif page == "📊 Insights":
                             len(
                                 consumed
                             ),
-
                             len(
                                 wasted
                             )
@@ -5455,38 +5295,20 @@ elif page == "📊 Insights":
 
             fig = (
                 px.pie(
-
                     outcome_df,
-
-                    names=
-                        "Outcome",
-
-                    values=
-                        "Items",
-
-                    hole=
-                        0.50,
-
+                    names="Outcome",
+                    values="Items",
+                    hole=.5,
                     title=
                         "Food Lifecycle Outcomes"
                 )
             )
 
 
-            # Transparent chart background
-            # works better in both themes
-            fig.update_layout(
-                paper_bgcolor=
-                    "rgba(0,0,0,0)",
-
-                plot_bgcolor=
-                    "rgba(0,0,0,0)"
-            )
-
-
             st.plotly_chart(
                 fig,
-                use_container_width=True
+                use_container_width=True,
+                theme="streamlit"
             )
 
 
@@ -5501,52 +5323,28 @@ elif page == "📊 Insights":
                 .groupby(
                     "Category"
                 )
-                .agg(
-                    Items=
-                        (
-                            "Food",
-                            "count"
-                        ),
-
-                    Value=
-                        (
-                            "Cost (RM)",
-                            "sum"
-                        )
+                .size()
+                .reset_index(
+                    name="Items"
                 )
-                .reset_index()
             )
 
 
-            category_fig = (
+            fig2 = (
                 px.bar(
-
                     category_df,
-
-                    x=
-                        "Category",
-
-                    y=
-                        "Items",
-
+                    x="Category",
+                    y="Items",
                     title=
                         "Available Pantry by Category"
                 )
             )
 
 
-            category_fig.update_layout(
-                paper_bgcolor=
-                    "rgba(0,0,0,0)",
-
-                plot_bgcolor=
-                    "rgba(0,0,0,0)"
-            )
-
-
             st.plotly_chart(
-                category_fig,
-                use_container_width=True
+                fig2,
+                use_container_width=True,
+                theme="streamlit"
             )
 
 
@@ -5579,17 +5377,11 @@ elif page == "📊 Insights":
 
 
         st.download_button(
-
             "⬇️ Download Backup",
-
-            data=
-                csv,
-
+            data=csv,
             file_name=
                 "smartpantry_backup.csv",
-
-            mime=
-                "text/csv"
+            mime="text/csv"
         )
 
 
@@ -5619,131 +5411,75 @@ elif page == "📊 Insights":
                 )
 
 
-                required = {
-
-                    "id",
-
-                    "item_name",
-
-                    "category",
-
-                    "quantity",
-
-                    "unit",
-
-                    "purchase_date",
-
-                    "expiry_date",
-
-                    "cost",
-
-                    "storage",
-
-                    "item_status"
-                }
-
-
-                if not (
-                    required
-                    .issubset(
-                        set(
-                            restored.columns
-                        )
-                    )
+                if st.button(
+                    "♻️ Restore Pantry",
+                    type="primary"
                 ):
 
 
-                    st.error(
-                        "This is not "
-                        "a valid "
-                        "SmartPantry backup."
+                    records = (
+
+                        restored
+                        .fillna("")
+                        .to_dict(
+                            orient="records"
+                        )
                     )
 
 
-                else:
-
-
-                    if st.button(
-                        "♻️ Restore Pantry"
+                    for record in (
+                        records
                     ):
 
 
-                        records = (
-
-                            restored
-                            .fillna("")
-                            .to_dict(
-                                orient=
-                                    "records"
-                            )
-                        )
-
-
-                        for record in (
-                            records
-                        ):
-
-
+                        record[
+                            "quantity"
+                        ] = int(
                             record[
                                 "quantity"
-                            ] = int(
-                                record[
-                                    "quantity"
-                                ]
-                            )
+                            ]
+                        )
 
 
+                        record[
+                            "cost"
+                        ] = float(
                             record[
                                 "cost"
-                            ] = float(
-                                record[
-                                    "cost"
-                                ]
-                            )
-
-
-                            record.setdefault(
-                                "status_date",
-                                ""
-                            )
-
-
-                        st.session_state[
-                            "pantry_items"
-                        ] = (
-                            records
+                            ]
                         )
 
 
-                        st.session_state[
-                            "ai_plan_signature"
-                        ] = ""
-
-
-                        st.session_state[
-                            "ai_attempt_signature"
-                        ] = ""
-
-
-                        add_activity(
-                            "♻️ Pantry backup restored."
+                        record.setdefault(
+                            "status_date",
+                            ""
                         )
 
 
-                        st.session_state[
-                            "flash_message"
-                        ] = (
-                            "Pantry restored successfully."
-                        )
+                    st.session_state[
+                        "pantry_items"
+                    ] = (
+                        records
+                    )
 
 
-                        st.rerun()
+                    st.session_state[
+                        "ai_plan_signature"
+                    ] = ""
+
+
+                    st.session_state[
+                        "ai_attempt_signature"
+                    ] = ""
+
+
+                    st.rerun()
 
 
             except Exception as error:
 
 
                 st.error(
-                    "Unable to restore "
-                    f"backup: {error}"
+                    f"Unable to restore: "
+                    f"{error}"
                 )
