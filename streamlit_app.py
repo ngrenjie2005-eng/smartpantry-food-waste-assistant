@@ -1,7 +1,9 @@
 import streamlit as st
 import pandas as pd
-from datetime import date, datetime
+import plotly.express as px
+from datetime import date, datetime, timedelta
 import uuid
+
 
 # =========================================================
 # PAGE CONFIGURATION
@@ -15,7 +17,7 @@ st.set_page_config(
 
 
 # =========================================================
-# SESSION DATA
+# SESSION STATE
 # =========================================================
 
 if "pantry_items" not in st.session_state:
@@ -23,41 +25,263 @@ if "pantry_items" not in st.session_state:
 
 
 # =========================================================
-# FUNCTIONS
+# FOOD NORMALISATION
 # =========================================================
 
-def calculate_expiry(expiry_date):
-    """
-    Calculate days remaining, expiry status and urgency score.
-    """
+FOOD_ALIASES = {
+    "milk": ["milk", "fresh milk"],
+    "egg": ["egg", "eggs"],
+    "bread": ["bread", "toast"],
+    "cheese": ["cheese"],
+    "chicken": ["chicken", "chicken breast"],
+    "rice": ["rice"],
+    "carrot": ["carrot", "carrots"],
+    "tomato": ["tomato", "tomatoes"],
+    "potato": ["potato", "potatoes"],
+    "onion": ["onion", "onions"],
+    "pasta": ["pasta", "spaghetti"],
+    "tuna": ["tuna", "canned tuna"],
+    "lettuce": ["lettuce"],
+    "banana": ["banana", "bananas"],
+    "apple": ["apple", "apples"],
+    "yogurt": ["yogurt", "yoghurt"],
+    "butter": ["butter"],
+    "flour": ["flour"],
+    "noodle": ["noodle", "noodles"],
+    "sausage": ["sausage", "sausages"],
+    "mushroom": ["mushroom", "mushrooms"],
+    "cucumber": ["cucumber", "cucumbers"],
+    "beef": ["beef"],
+    "fish": ["fish"],
+    "spinach": ["spinach"]
+}
 
-    if isinstance(expiry_date, str):
-        expiry_date = datetime.strptime(
-            expiry_date,
+
+def normalize_food(food_name):
+
+    food_name = str(food_name).lower().strip()
+
+    for canonical, variations in FOOD_ALIASES.items():
+
+        for variation in variations:
+
+            if variation in food_name:
+                return canonical
+
+    return food_name
+
+
+# =========================================================
+# RECIPES
+# =========================================================
+
+RECIPES = [
+    {
+        "name": "Cheese Omelette",
+        "icon": "🍳",
+        "ingredients": ["egg", "cheese", "milk"],
+        "category": "Breakfast"
+    },
+    {
+        "name": "Egg Sandwich",
+        "icon": "🥪",
+        "ingredients": ["bread", "egg", "cheese"],
+        "category": "Breakfast"
+    },
+    {
+        "name": "Chicken Fried Rice",
+        "icon": "🍚",
+        "ingredients": [
+            "chicken",
+            "rice",
+            "egg",
+            "carrot",
+            "onion"
+        ],
+        "category": "Main Meal"
+    },
+    {
+        "name": "Tomato Pasta",
+        "icon": "🍝",
+        "ingredients": [
+            "pasta",
+            "tomato",
+            "onion",
+            "cheese"
+        ],
+        "category": "Main Meal"
+    },
+    {
+        "name": "Tuna Sandwich",
+        "icon": "🥪",
+        "ingredients": [
+            "bread",
+            "tuna",
+            "lettuce",
+            "tomato"
+        ],
+        "category": "Light Meal"
+    },
+    {
+        "name": "Chicken Sandwich",
+        "icon": "🥪",
+        "ingredients": [
+            "bread",
+            "chicken",
+            "lettuce",
+            "tomato"
+        ],
+        "category": "Light Meal"
+    },
+    {
+        "name": "Vegetable Fried Rice",
+        "icon": "🍚",
+        "ingredients": [
+            "rice",
+            "egg",
+            "carrot",
+            "onion"
+        ],
+        "category": "Main Meal"
+    },
+    {
+        "name": "Simple Salad",
+        "icon": "🥗",
+        "ingredients": [
+            "lettuce",
+            "tomato",
+            "cucumber"
+        ],
+        "category": "Healthy"
+    },
+    {
+        "name": "Chicken Salad",
+        "icon": "🥗",
+        "ingredients": [
+            "chicken",
+            "lettuce",
+            "tomato",
+            "cucumber"
+        ],
+        "category": "Healthy"
+    },
+    {
+        "name": "Mashed Potato",
+        "icon": "🥔",
+        "ingredients": [
+            "potato",
+            "milk",
+            "butter"
+        ],
+        "category": "Side Dish"
+    },
+    {
+        "name": "Mushroom Omelette",
+        "icon": "🍳",
+        "ingredients": [
+            "egg",
+            "mushroom",
+            "cheese"
+        ],
+        "category": "Breakfast"
+    },
+    {
+        "name": "Chicken Noodles",
+        "icon": "🍜",
+        "ingredients": [
+            "noodle",
+            "chicken",
+            "carrot",
+            "onion"
+        ],
+        "category": "Main Meal"
+    },
+    {
+        "name": "Sausage Egg Breakfast",
+        "icon": "🍳",
+        "ingredients": [
+            "sausage",
+            "egg",
+            "bread"
+        ],
+        "category": "Breakfast"
+    },
+    {
+        "name": "Banana Yogurt Bowl",
+        "icon": "🥣",
+        "ingredients": [
+            "banana",
+            "yogurt"
+        ],
+        "category": "Healthy"
+    },
+    {
+        "name": "Apple Yogurt Bowl",
+        "icon": "🥣",
+        "ingredients": [
+            "apple",
+            "yogurt"
+        ],
+        "category": "Healthy"
+    },
+    {
+        "name": "Cheesy Tomato Toast",
+        "icon": "🍞",
+        "ingredients": [
+            "bread",
+            "tomato",
+            "cheese"
+        ],
+        "category": "Light Meal"
+    }
+]
+
+
+# =========================================================
+# EXPIRY FUNCTIONS
+# =========================================================
+
+def convert_date(value):
+
+    if isinstance(value, str):
+        return datetime.strptime(
+            value,
             "%Y-%m-%d"
         ).date()
 
-    today = date.today()
+    return value
 
-    days_left = (expiry_date - today).days
+
+def calculate_expiry(expiry_date):
+
+    expiry_date = convert_date(expiry_date)
+
+    days_left = (
+        expiry_date - date.today()
+    ).days
 
     if days_left < 0:
+
         status = "⚫ Expired"
         priority = 100
 
     elif days_left <= 2:
+
         status = "🔴 Urgent"
         priority = 90
 
     elif days_left <= 7:
+
         status = "🟠 Expiring Soon"
         priority = 75
 
     elif days_left <= 14:
+
         status = "🟡 Use Soon"
         priority = 40
 
     else:
+
         status = "🟢 Fresh"
         priority = 20
 
@@ -65,45 +289,45 @@ def calculate_expiry(expiry_date):
 
 
 def expiry_message(days_left):
-    """
-    Create a user-friendly expiry message.
-    """
 
     if days_left < 0:
-        days_expired = abs(days_left)
 
-        if days_expired == 1:
+        amount = abs(days_left)
+
+        if amount == 1:
             return "Expired 1 day ago"
 
-        return f"Expired {days_expired} days ago"
+        return f"Expired {amount} days ago"
 
-    elif days_left == 0:
+    if days_left == 0:
         return "Expires today"
 
-    elif days_left == 1:
+    if days_left == 1:
         return "Expires tomorrow"
 
-    else:
-        return f"Expires in {days_left} days"
+    return f"Expires in {days_left} days"
 
+
+# =========================================================
+# PANTRY FUNCTIONS
+# =========================================================
 
 def create_dataframe():
-    """
-    Convert pantry records into a DataFrame.
-    """
 
     if not st.session_state.pantry_items:
         return pd.DataFrame()
 
-    data = []
+    records = []
 
     for item in st.session_state.pantry_items:
 
-        days_left, expiry_status, priority = calculate_expiry(
-            item["expiry_date"]
+        days_left, expiry_status, priority = (
+            calculate_expiry(
+                item["expiry_date"]
+            )
         )
 
-        data.append(
+        records.append(
             {
                 "ID": item["id"],
                 "Food": item["item_name"],
@@ -115,37 +339,350 @@ def create_dataframe():
                 "Days Left": days_left,
                 "Expiry Status": expiry_status,
                 "Priority Score": priority,
-                "Cost (RM)": item["cost"],
+                "Cost (RM)": float(
+                    item["cost"]
+                ),
                 "Storage": item["storage"],
-                "Item Status": item["item_status"]
+                "Item Status": item[
+                    "item_status"
+                ]
             }
         )
 
-    return pd.DataFrame(data)
+    return pd.DataFrame(records)
 
 
 def mark_item(item_id, new_status):
-    """
-    Change food status to Consumed or Wasted.
-    """
 
     for item in st.session_state.pantry_items:
 
         if item["id"] == item_id:
+
             item["item_status"] = new_status
+
+            item["status_date"] = str(
+                date.today()
+            )
+
             break
 
 
 def delete_item(item_id):
-    """
-    Delete pantry record.
-    """
 
     st.session_state.pantry_items = [
         item
-        for item in st.session_state.pantry_items
+        for item
+        in st.session_state.pantry_items
         if item["id"] != item_id
     ]
+
+
+def raw_backup_dataframe():
+
+    if not st.session_state.pantry_items:
+        return pd.DataFrame()
+
+    return pd.DataFrame(
+        st.session_state.pantry_items
+    )
+
+
+# =========================================================
+# SAMPLE DATA
+# =========================================================
+
+def load_sample_data():
+
+    today = date.today()
+
+    samples = [
+        {
+            "item_name": "Fresh Milk",
+            "category": "Dairy",
+            "quantity": 1,
+            "unit": "Bottle",
+            "purchase_date": str(today),
+            "expiry_date": str(
+                today + timedelta(days=2)
+            ),
+            "cost": 7.50,
+            "storage": "Refrigerator"
+        },
+        {
+            "item_name": "Chicken Breast",
+            "category": "Meat",
+            "quantity": 1,
+            "unit": "Pack",
+            "purchase_date": str(today),
+            "expiry_date": str(
+                today + timedelta(days=4)
+            ),
+            "cost": 12.00,
+            "storage": "Refrigerator"
+        },
+        {
+            "item_name": "Eggs",
+            "category": "Dairy",
+            "quantity": 10,
+            "unit": "Piece",
+            "purchase_date": str(today),
+            "expiry_date": str(
+                today + timedelta(days=7)
+            ),
+            "cost": 8.50,
+            "storage": "Refrigerator"
+        },
+        {
+            "item_name": "Bread",
+            "category": "Bakery",
+            "quantity": 1,
+            "unit": "Pack",
+            "purchase_date": str(today),
+            "expiry_date": str(
+                today + timedelta(days=3)
+            ),
+            "cost": 4.50,
+            "storage": "Pantry"
+        },
+        {
+            "item_name": "Cheese",
+            "category": "Dairy",
+            "quantity": 1,
+            "unit": "Pack",
+            "purchase_date": str(today),
+            "expiry_date": str(
+                today + timedelta(days=8)
+            ),
+            "cost": 9.50,
+            "storage": "Refrigerator"
+        },
+        {
+            "item_name": "Tomatoes",
+            "category": "Vegetables",
+            "quantity": 4,
+            "unit": "Piece",
+            "purchase_date": str(today),
+            "expiry_date": str(
+                today + timedelta(days=5)
+            ),
+            "cost": 5.00,
+            "storage": "Refrigerator"
+        },
+        {
+            "item_name": "Rice",
+            "category": "Dry Food",
+            "quantity": 2,
+            "unit": "kg",
+            "purchase_date": str(today),
+            "expiry_date": str(
+                today + timedelta(days=120)
+            ),
+            "cost": 18.00,
+            "storage": "Pantry"
+        },
+        {
+            "item_name": "Carrots",
+            "category": "Vegetables",
+            "quantity": 3,
+            "unit": "Piece",
+            "purchase_date": str(today),
+            "expiry_date": str(
+                today + timedelta(days=9)
+            ),
+            "cost": 4.00,
+            "storage": "Refrigerator"
+        },
+        {
+            "item_name": "Onions",
+            "category": "Vegetables",
+            "quantity": 4,
+            "unit": "Piece",
+            "purchase_date": str(today),
+            "expiry_date": str(
+                today + timedelta(days=20)
+            ),
+            "cost": 4.50,
+            "storage": "Pantry"
+        },
+        {
+            "item_name": "Pasta",
+            "category": "Dry Food",
+            "quantity": 2,
+            "unit": "Pack",
+            "purchase_date": str(today),
+            "expiry_date": str(
+                today + timedelta(days=90)
+            ),
+            "cost": 10.00,
+            "storage": "Pantry"
+        }
+    ]
+
+    for sample in samples:
+
+        sample["id"] = str(
+            uuid.uuid4()
+        )
+
+        sample["item_status"] = (
+            "Available"
+        )
+
+        sample["status_date"] = ""
+
+        st.session_state.pantry_items.append(
+            sample
+        )
+
+
+# =========================================================
+# RECIPE MATCHING
+# =========================================================
+
+def calculate_recipe_matches():
+
+    available_items = [
+        item
+        for item
+        in st.session_state.pantry_items
+        if item["item_status"]
+        == "Available"
+    ]
+
+    pantry_keys = {}
+
+    for item in available_items:
+
+        key = normalize_food(
+            item["item_name"]
+        )
+
+        if key not in pantry_keys:
+            pantry_keys[key] = []
+
+        pantry_keys[key].append(
+            item
+        )
+
+    results = []
+
+    for recipe in RECIPES:
+
+        required = recipe[
+            "ingredients"
+        ]
+
+        matched = [
+            ingredient
+            for ingredient in required
+            if ingredient in pantry_keys
+        ]
+
+        missing = [
+            ingredient
+            for ingredient in required
+            if ingredient not in pantry_keys
+        ]
+
+        match_percentage = (
+            len(matched)
+            /
+            len(required)
+            *
+            100
+        )
+
+        expiring_used = []
+
+        expiry_bonus = 0
+
+        for ingredient in matched:
+
+            for pantry_item in pantry_keys[
+                ingredient
+            ]:
+
+                days_left, _, _ = (
+                    calculate_expiry(
+                        pantry_item[
+                            "expiry_date"
+                        ]
+                    )
+                )
+
+                if 0 <= days_left <= 2:
+
+                    expiry_bonus += 8
+
+                    expiring_used.append(
+                        (
+                            pantry_item[
+                                "item_name"
+                            ],
+                            days_left
+                        )
+                    )
+
+                    break
+
+                elif 3 <= days_left <= 7:
+
+                    expiry_bonus += 5
+
+                    expiring_used.append(
+                        (
+                            pantry_item[
+                                "item_name"
+                            ],
+                            days_left
+                        )
+                    )
+
+                    break
+
+        expiry_bonus = min(
+            expiry_bonus,
+            20
+        )
+
+        recommendation_score = (
+            match_percentage * 0.8
+            +
+            expiry_bonus
+        )
+
+        recommendation_score = min(
+            recommendation_score,
+            100
+        )
+
+        results.append(
+            {
+                "name": recipe["name"],
+                "icon": recipe["icon"],
+                "category": recipe[
+                    "category"
+                ],
+                "required": required,
+                "matched": matched,
+                "missing": missing,
+                "match_percentage":
+                    match_percentage,
+                "expiry_bonus":
+                    expiry_bonus,
+                "score":
+                    recommendation_score,
+                "expiring_used":
+                    expiring_used
+            }
+        )
+
+    results.sort(
+        key=lambda x: x["score"],
+        reverse=True
+    )
+
+    return results
 
 
 # =========================================================
@@ -176,10 +713,26 @@ page = st.sidebar.radio(
 
 st.sidebar.divider()
 
-st.sidebar.caption(
-    "SmartPantry helps reduce household food waste "
-    "through expiry monitoring and smarter food usage."
+st.sidebar.write(
+    "**SmartPantry**"
 )
+
+st.sidebar.caption(
+    "Track food expiry, reduce waste "
+    "and discover meals using the "
+    "ingredients you already have."
+)
+
+if not st.session_state.pantry_items:
+
+    if st.sidebar.button(
+        "🧪 Load Demo Data",
+        use_container_width=True
+    ):
+
+        load_sample_data()
+
+        st.rerun()
 
 
 # =========================================================
@@ -195,141 +748,192 @@ if page == "🏠 Dashboard":
     if df.empty:
 
         st.info(
-            "Your pantry is currently empty. "
-            "Go to **Add Food** to add your first item."
+            "Your pantry is currently empty."
+        )
+
+        st.write(
+            "Go to **Add Food** to create "
+            "your first pantry record, or "
+            "use **Load Demo Data** in the sidebar."
         )
 
     else:
 
         active_df = df[
-            df["Item Status"] == "Available"
+            df["Item Status"]
+            == "Available"
         ]
 
-        total_items = len(active_df)
+        total_available = len(
+            active_df
+        )
 
         expiring_soon = len(
             active_df[
-                (active_df["Days Left"] >= 0)
+                (
+                    active_df[
+                        "Days Left"
+                    ] >= 0
+                )
                 &
-                (active_df["Days Left"] <= 7)
+                (
+                    active_df[
+                        "Days Left"
+                    ] <= 7
+                )
             ]
         )
 
-        expired_items = len(
+        expired = len(
             active_df[
-                active_df["Days Left"] < 0
+                active_df[
+                    "Days Left"
+                ] < 0
             ]
         )
 
-        consumed_items = len(
+        consumed = len(
             df[
-                df["Item Status"] == "Consumed"
+                df["Item Status"]
+                == "Consumed"
             ]
         )
 
-        wasted_items = len(
+        wasted = len(
             df[
-                df["Item Status"] == "Wasted"
+                df["Item Status"]
+                == "Wasted"
             ]
         )
 
         waste_cost = df.loc[
-            df["Item Status"] == "Wasted",
+            df["Item Status"]
+            == "Wasted",
             "Cost (RM)"
         ].sum()
 
-        # KPI cards
+        pantry_value = active_df[
+            "Cost (RM)"
+        ].sum()
 
-        col1, col2, col3 = st.columns(3)
+        # -------------------------------------------------
+        # KPI CARDS
+        # -------------------------------------------------
 
-        col1.metric(
-            "🥫 Available Items",
-            total_items
+        row1 = st.columns(4)
+
+        row1[0].metric(
+            "🥫 Available",
+            total_available
         )
 
-        col2.metric(
+        row1[1].metric(
             "⚠️ Expiring Soon",
             expiring_soon
         )
 
-        col3.metric(
+        row1[2].metric(
             "⌛ Expired",
-            expired_items
+            expired
         )
 
-        col4, col5, col6 = st.columns(3)
+        row1[3].metric(
+            "💰 Pantry Value",
+            f"RM {pantry_value:.2f}"
+        )
 
-        col4.metric(
+        row2 = st.columns(3)
+
+        row2[0].metric(
             "✅ Consumed",
-            consumed_items
+            consumed
         )
 
-        col5.metric(
+        row2[1].metric(
             "🗑️ Wasted",
-            wasted_items
+            wasted
         )
 
-        col6.metric(
+        row2[2].metric(
             "💸 Waste Cost",
             f"RM {waste_cost:.2f}"
         )
 
         st.divider()
 
-        # =================================================
-        # PRIORITY SECTION
-        # =================================================
+        # -------------------------------------------------
+        # FOOD PRIORITY
+        # -------------------------------------------------
 
-        st.subheader("⚠️ Use These Foods First")
+        st.subheader(
+            "⚠️ Use These Foods First"
+        )
 
-        priority_df = active_df.copy()
-
-        priority_df = priority_df[
-            priority_df["Days Left"] <= 14
-        ]
-
-        priority_df = priority_df.sort_values(
-            by=[
-                "Priority Score",
+        priority_df = active_df[
+            active_df[
                 "Days Left"
-            ],
-            ascending=[
-                False,
-                True
-            ]
+            ] <= 14
+        ].copy()
+
+        priority_df = (
+            priority_df.sort_values(
+                by=[
+                    "Priority Score",
+                    "Days Left"
+                ],
+                ascending=[
+                    False,
+                    True
+                ]
+            )
         )
 
         if priority_df.empty:
 
             st.success(
-                "No food currently needs urgent attention."
+                "No food currently needs "
+                "urgent attention."
             )
 
         else:
 
-            for _, row in priority_df.head(5).iterrows():
+            for _, row in (
+                priority_df
+                .head(5)
+                .iterrows()
+            ):
 
-                message = expiry_message(
-                    row["Days Left"]
-                )
+                with st.container(
+                    border=True
+                ):
 
-                with st.container(border=True):
-
-                    col_a, col_b = st.columns(
-                        [3, 1]
+                    c1, c2, c3 = (
+                        st.columns(
+                            [3, 2, 1]
+                        )
                     )
 
-                    with col_a:
+                    with c1:
 
                         st.subheader(
                             row["Food"]
                         )
 
                         st.write(
-                            f"**{row['Expiry Status']}**"
+                            row[
+                                "Expiry Status"
+                            ]
                         )
 
-                        st.write(message)
+                    with c2:
+
+                        st.write(
+                            expiry_message(
+                                row[
+                                    "Days Left"
+                                ]
+                            )
+                        )
 
                         st.caption(
                             f"{row['Quantity']} "
@@ -337,16 +941,54 @@ if page == "🏠 Dashboard":
                             f"{row['Storage']}"
                         )
 
-                    with col_b:
+                    with c3:
 
                         st.metric(
                             "Priority",
-                            row["Priority Score"]
+                            row[
+                                "Priority Score"
+                            ]
                         )
+
+        # -------------------------------------------------
+        # CATEGORY CHART
+        # -------------------------------------------------
+
+        if not active_df.empty:
+
+            st.divider()
+
+            st.subheader(
+                "📦 Current Pantry Composition"
+            )
+
+            category_counts = (
+                active_df
+                .groupby("Category")
+                .size()
+                .reset_index(
+                    name="Items"
+                )
+            )
+
+            fig = px.bar(
+                category_counts,
+                x="Category",
+                y="Items",
+                title=(
+                    "Available Food "
+                    "by Category"
+                )
+            )
+
+            st.plotly_chart(
+                fig,
+                use_container_width=True
+            )
 
 
 # =========================================================
-# ADD FOOD PAGE
+# ADD FOOD
 # =========================================================
 
 elif page == "➕ Add Food":
@@ -354,8 +996,9 @@ elif page == "➕ Add Food":
     st.header("➕ Add Food")
 
     st.write(
-        "Add food items to your pantry and SmartPantry "
-        "will automatically monitor their expiry dates."
+        "Add a food item and SmartPantry "
+        "will automatically monitor its "
+        "expiry priority."
     )
 
     with st.form(
@@ -369,7 +1012,9 @@ elif page == "➕ Add Food":
 
             item_name = st.text_input(
                 "Food Name *",
-                placeholder="Example: Fresh Milk"
+                placeholder=(
+                    "Example: Fresh Milk"
+                )
             )
 
             category = st.selectbox(
@@ -413,18 +1058,26 @@ elif page == "➕ Add Food":
 
         with col2:
 
-            purchase_date = st.date_input(
-                "Purchase Date *",
-                value=date.today()
+            purchase_date = (
+                st.date_input(
+                    "Purchase Date *",
+                    value=date.today()
+                )
             )
 
-            expiry_date = st.date_input(
-                "Expiry Date *",
-                value=date.today()
+            expiry_date = (
+                st.date_input(
+                    "Expiry Date *",
+                    value=(
+                        date.today()
+                        +
+                        timedelta(days=7)
+                    )
+                )
             )
 
             cost = st.number_input(
-                "Cost (RM)",
+                "Total Cost (RM)",
                 min_value=0.0,
                 value=0.0,
                 step=0.50,
@@ -442,9 +1095,11 @@ elif page == "➕ Add Food":
                 ]
             )
 
-        submitted = st.form_submit_button(
-            "➕ Add to Pantry",
-            use_container_width=True
+        submitted = (
+            st.form_submit_button(
+                "➕ Add to Pantry",
+                use_container_width=True
+            )
         )
 
         if submitted:
@@ -452,52 +1107,68 @@ elif page == "➕ Add Food":
             if not item_name.strip():
 
                 st.error(
-                    "Please enter the food name."
+                    "Please enter a food name."
                 )
 
-            elif expiry_date < purchase_date:
+            elif (
+                expiry_date
+                <
+                purchase_date
+            ):
 
                 st.error(
-                    "Expiry date cannot be earlier "
-                    "than the purchase date."
+                    "Expiry date cannot be "
+                    "earlier than the "
+                    "purchase date."
                 )
 
             else:
 
                 new_item = {
-                    "id": str(uuid.uuid4()),
-                    "item_name": item_name.strip(),
-                    "category": category,
-                    "quantity": quantity,
-                    "unit": unit,
-                    "purchase_date": str(
-                        purchase_date
+                    "id": str(
+                        uuid.uuid4()
                     ),
-                    "expiry_date": str(
-                        expiry_date
-                    ),
-                    "cost": float(cost),
-                    "storage": storage,
-                    "item_status": "Available"
+                    "item_name":
+                        item_name.strip(),
+                    "category":
+                        category,
+                    "quantity":
+                        int(quantity),
+                    "unit":
+                        unit,
+                    "purchase_date":
+                        str(purchase_date),
+                    "expiry_date":
+                        str(expiry_date),
+                    "cost":
+                        float(cost),
+                    "storage":
+                        storage,
+                    "item_status":
+                        "Available",
+                    "status_date":
+                        ""
                 }
 
-                st.session_state.pantry_items.append(
+                st.session_state[
+                    "pantry_items"
+                ].append(
                     new_item
                 )
 
-                days_left, expiry_status, priority = (
+                days_left, status, _ = (
                     calculate_expiry(
                         expiry_date
                     )
                 )
 
                 st.success(
-                    f"✅ {item_name} added to "
-                    f"your pantry successfully!"
+                    f"✅ {item_name} "
+                    "added successfully!"
                 )
 
                 st.info(
-                    f"{expiry_status} — "
+                    f"{status} — "
                     f"{expiry_message(days_left)}"
                 )
 
@@ -515,97 +1186,133 @@ elif page == "🥫 My Pantry":
     if df.empty:
 
         st.info(
-            "Your pantry is empty. "
-            "Add some food first."
+            "Your pantry is empty."
         )
 
     else:
 
-        # =================================================
-        # SEARCH + FILTERS
-        # =================================================
+        # -------------------------------------------------
+        # SEARCH AND FILTER
+        # -------------------------------------------------
 
         search = st.text_input(
             "🔍 Search Food",
-            placeholder="Search by food name..."
-        )
-
-        col1, col2, col3 = st.columns(3)
-
-        category_filter = col1.selectbox(
-            "Category",
-            ["All"]
-            + sorted(
-                df["Category"]
-                .unique()
-                .tolist()
+            placeholder=(
+                "Search by food name..."
             )
         )
 
-        storage_filter = col2.selectbox(
-            "Storage",
-            ["All"]
-            + sorted(
-                df["Storage"]
-                .unique()
-                .tolist()
+        f1, f2, f3 = st.columns(3)
+
+        category_filter = (
+            f1.selectbox(
+                "Category",
+                ["All"]
+                +
+                sorted(
+                    df[
+                        "Category"
+                    ]
+                    .unique()
+                    .tolist()
+                )
             )
         )
 
-        status_filter = col3.selectbox(
-            "Item Status",
-            [
-                "All",
-                "Available",
-                "Consumed",
-                "Wasted"
-            ]
+        storage_filter = (
+            f2.selectbox(
+                "Storage",
+                ["All"]
+                +
+                sorted(
+                    df[
+                        "Storage"
+                    ]
+                    .unique()
+                    .tolist()
+                )
+            )
+        )
+
+        status_filter = (
+            f3.selectbox(
+                "Item Status",
+                [
+                    "All",
+                    "Available",
+                    "Consumed",
+                    "Wasted"
+                ]
+            )
         )
 
         filtered_df = df.copy()
 
         if search:
 
-            filtered_df = filtered_df[
-                filtered_df["Food"]
-                .str.contains(
-                    search,
-                    case=False,
-                    na=False
-                )
-            ]
+            filtered_df = (
+                filtered_df[
+                    filtered_df[
+                        "Food"
+                    ]
+                    .str.contains(
+                        search,
+                        case=False,
+                        na=False
+                    )
+                ]
+            )
 
         if category_filter != "All":
 
-            filtered_df = filtered_df[
-                filtered_df["Category"]
-                == category_filter
-            ]
+            filtered_df = (
+                filtered_df[
+                    filtered_df[
+                        "Category"
+                    ]
+                    ==
+                    category_filter
+                ]
+            )
 
         if storage_filter != "All":
 
-            filtered_df = filtered_df[
-                filtered_df["Storage"]
-                == storage_filter
-            ]
+            filtered_df = (
+                filtered_df[
+                    filtered_df[
+                        "Storage"
+                    ]
+                    ==
+                    storage_filter
+                ]
+            )
 
         if status_filter != "All":
 
-            filtered_df = filtered_df[
-                filtered_df["Item Status"]
-                == status_filter
-            ]
+            filtered_df = (
+                filtered_df[
+                    filtered_df[
+                        "Item Status"
+                    ]
+                    ==
+                    status_filter
+                ]
+            )
 
-        filtered_df = filtered_df.sort_values(
-            by="Days Left",
-            ascending=True
+        filtered_df = (
+            filtered_df
+            .sort_values(
+                "Days Left",
+                ascending=True
+            )
         )
 
         st.subheader(
-            f"Food Records ({len(filtered_df)})"
+            f"Food Records "
+            f"({len(filtered_df)})"
         )
 
-        display_columns = [
+        columns = [
             "Food",
             "Category",
             "Quantity",
@@ -619,47 +1326,65 @@ elif page == "🥫 My Pantry":
         ]
 
         st.dataframe(
-            filtered_df[display_columns],
+            filtered_df[columns],
             use_container_width=True,
             hide_index=True
         )
 
-        # =================================================
-        # MANAGE ITEMS
-        # =================================================
+        # -------------------------------------------------
+        # MANAGE FOOD
+        # -------------------------------------------------
 
         st.divider()
 
-        st.subheader("Manage Pantry Items")
+        st.subheader(
+            "Manage Pantry Items"
+        )
 
         available_items = [
             item
-            for item in st.session_state.pantry_items
-            if item["item_status"] == "Available"
+            for item
+            in st.session_state[
+                "pantry_items"
+            ]
+            if item[
+                "item_status"
+            ] == "Available"
         ]
 
         if available_items:
 
-            item_options = {
-                f"{item['item_name']} "
-                f"({item['expiry_date']})":
+            options = {
+                (
+                    f"{item['item_name']} "
+                    f"— {item['expiry_date']}"
+                ):
                 item["id"]
-                for item in available_items
+                for item
+                in available_items
             }
 
-            selected_label = st.selectbox(
-                "Select an available food item",
-                list(item_options.keys())
+            selected_label = (
+                st.selectbox(
+                    "Select Food Item",
+                    list(
+                        options.keys()
+                    )
+                )
             )
 
-            selected_id = item_options[
-                selected_label
-            ]
+            selected_id = (
+                options[
+                    selected_label
+                ]
+            )
 
-            col1, col2, col3 = st.columns(3)
+            b1, b2, b3 = (
+                st.columns(3)
+            )
 
-            if col1.button(
-                "✅ Mark as Consumed",
+            if b1.button(
+                "✅ Consumed",
                 use_container_width=True
             ):
 
@@ -668,14 +1393,10 @@ elif page == "🥫 My Pantry":
                     "Consumed"
                 )
 
-                st.success(
-                    "Item marked as consumed."
-                )
-
                 st.rerun()
 
-            if col2.button(
-                "🗑️ Mark as Wasted",
+            if b2.button(
+                "🗑️ Wasted",
                 use_container_width=True
             ):
 
@@ -684,14 +1405,10 @@ elif page == "🥫 My Pantry":
                     "Wasted"
                 )
 
-                st.warning(
-                    "Item marked as wasted."
-                )
-
                 st.rerun()
 
-            if col3.button(
-                "❌ Delete Item",
+            if b3.button(
+                "❌ Delete",
                 use_container_width=True
             ):
 
@@ -699,18 +1416,153 @@ elif page == "🥫 My Pantry":
                     selected_id
                 )
 
-                st.success(
-                    "Item deleted."
-                )
-
                 st.rerun()
 
         else:
 
             st.info(
-                "There are no available pantry items "
-                "to manage."
+                "There are no available "
+                "items to manage."
             )
+
+        # -------------------------------------------------
+        # BACKUP
+        # -------------------------------------------------
+
+        st.divider()
+
+        st.subheader(
+            "💾 Pantry Backup"
+        )
+
+        st.caption(
+            "Download a backup so you can "
+            "restore your pantry if the "
+            "online application restarts."
+        )
+
+        backup_df = (
+            raw_backup_dataframe()
+        )
+
+        csv_data = (
+            backup_df.to_csv(
+                index=False
+            )
+            .encode("utf-8")
+        )
+
+        st.download_button(
+            "⬇️ Download Pantry Backup",
+            data=csv_data,
+            file_name=(
+                "smartpantry_backup.csv"
+            ),
+            mime="text/csv"
+        )
+
+        uploaded_file = (
+            st.file_uploader(
+                "Restore Pantry Backup",
+                type=["csv"]
+            )
+        )
+
+        if uploaded_file is not None:
+
+            try:
+
+                restored = pd.read_csv(
+                    uploaded_file
+                )
+
+                required_columns = {
+                    "id",
+                    "item_name",
+                    "category",
+                    "quantity",
+                    "unit",
+                    "purchase_date",
+                    "expiry_date",
+                    "cost",
+                    "storage",
+                    "item_status"
+                }
+
+                if not (
+                    required_columns
+                    .issubset(
+                        restored.columns
+                    )
+                ):
+
+                    st.error(
+                        "This does not appear "
+                        "to be a valid "
+                        "SmartPantry backup."
+                    )
+
+                else:
+
+                    if st.button(
+                        "♻️ Restore Backup"
+                    ):
+
+                        records = (
+                            restored
+                            .fillna("")
+                            .to_dict(
+                                orient="records"
+                            )
+                        )
+
+                        for record in records:
+
+                            record[
+                                "quantity"
+                            ] = int(
+                                record[
+                                    "quantity"
+                                ]
+                            )
+
+                            record[
+                                "cost"
+                            ] = float(
+                                record[
+                                    "cost"
+                                ]
+                            )
+
+                            if (
+                                "status_date"
+                                not in record
+                            ):
+
+                                record[
+                                    "status_date"
+                                ] = ""
+
+                        st.session_state[
+                            "pantry_items"
+                        ] = records
+
+                        st.success(
+                            "Backup restored."
+                        )
+
+                        st.rerun()
+
+            except Exception as e:
+
+                st.error(
+                    "Unable to restore "
+                    "the backup."
+                )
+
+                st.caption(
+                    str(e)
+                )
 
 
 # =========================================================
@@ -719,45 +1571,222 @@ elif page == "🥫 My Pantry":
 
 elif page == "🍳 Meal Suggestions":
 
-    st.header("🍳 Meal Suggestions")
+    st.header(
+        "🍳 Smart Meal Suggestions"
+    )
 
-    st.info(
-        "The next development stage will recommend "
-        "meals based on ingredients currently available "
-        "in your pantry."
+    st.write(
+        "SmartPantry recommends meals "
+        "based on the ingredients you "
+        "already have and gives extra "
+        "priority to food that should "
+        "be consumed soon."
     )
 
     df = create_dataframe()
 
-    if not df.empty:
+    if df.empty:
+
+        st.info(
+            "Add food to your pantry "
+            "before generating meal "
+            "suggestions."
+        )
+
+    else:
 
         available_df = df[
             df["Item Status"]
             == "Available"
         ]
 
-        if not available_df.empty:
+        if available_df.empty:
 
-            st.subheader(
-                "Currently Available Ingredients"
+            st.warning(
+                "There are currently no "
+                "available ingredients."
             )
-
-            ingredients = (
-                available_df["Food"]
-                .tolist()
-            )
-
-            for ingredient in ingredients:
-
-                st.write(
-                    f"• {ingredient}"
-                )
 
         else:
 
-            st.warning(
-                "No available ingredients."
+            st.subheader(
+                "Available Ingredients"
             )
+
+            ingredient_text = ", ".join(
+                available_df[
+                    "Food"
+                ].tolist()
+            )
+
+            st.write(
+                ingredient_text
+            )
+
+            st.divider()
+
+            recipe_results = (
+                calculate_recipe_matches()
+            )
+
+            minimum_match = (
+                st.slider(
+                    "Minimum Ingredient Match",
+                    min_value=0,
+                    max_value=100,
+                    value=50,
+                    step=10
+                )
+            )
+
+            filtered_recipes = [
+                recipe
+                for recipe
+                in recipe_results
+                if recipe[
+                    "match_percentage"
+                ] >= minimum_match
+            ]
+
+            if not filtered_recipes:
+
+                st.warning(
+                    "No recipes match the "
+                    "selected requirement."
+                )
+
+            else:
+
+                st.subheader(
+                    "Recommended Meals"
+                )
+
+                for number, recipe in (
+                    enumerate(
+                        filtered_recipes[
+                            :8
+                        ],
+                        start=1
+                    )
+                ):
+
+                    with st.container(
+                        border=True
+                    ):
+
+                        title_col, score_col = (
+                            st.columns(
+                                [4, 1]
+                            )
+                        )
+
+                        with title_col:
+
+                            st.subheader(
+                                f"{number}. "
+                                f"{recipe['icon']} "
+                                f"{recipe['name']}"
+                            )
+
+                            st.caption(
+                                recipe[
+                                    "category"
+                                ]
+                            )
+
+                        with score_col:
+
+                            st.metric(
+                                "Recommendation",
+                                f"{recipe['score']:.0f}"
+                            )
+
+                        match_percentage = (
+                            recipe[
+                                "match_percentage"
+                            ]
+                        )
+
+                        st.write(
+                            "**Ingredient Match:** "
+                            f"{match_percentage:.0f}%"
+                        )
+
+                        st.progress(
+                            min(
+                                match_percentage
+                                / 100,
+                                1.0
+                            )
+                        )
+
+                        if recipe["matched"]:
+
+                            matched_names = [
+                                item.title()
+                                for item
+                                in recipe[
+                                    "matched"
+                                ]
+                            ]
+
+                            st.write(
+                                "✅ **Available:** "
+                                +
+                                ", ".join(
+                                    matched_names
+                                )
+                            )
+
+                        if recipe["missing"]:
+
+                            missing_names = [
+                                item.title()
+                                for item
+                                in recipe[
+                                    "missing"
+                                ]
+                            ]
+
+                            st.write(
+                                "🛒 **Missing:** "
+                                +
+                                ", ".join(
+                                    missing_names
+                                )
+                            )
+
+                        if (
+                            recipe[
+                                "expiring_used"
+                            ]
+                        ):
+
+                            st.write(
+                                "⚠️ **Uses food "
+                                "expiring soon:**"
+                            )
+
+                            for (
+                                food_name,
+                                days_left
+                            ) in recipe[
+                                "expiring_used"
+                            ]:
+
+                                st.write(
+                                    "• "
+                                    f"{food_name}: "
+                                    f"{expiry_message(days_left)}"
+                                )
+
+                            st.success(
+                                "SmartPantry has "
+                                "ranked this meal "
+                                "higher because it "
+                                "helps use food "
+                                "before expiry."
+                            )
 
 
 # =========================================================
@@ -766,15 +1795,17 @@ elif page == "🍳 Meal Suggestions":
 
 elif page == "📊 Waste Analytics":
 
-    st.header("📊 Waste Analytics")
+    st.header(
+        "📊 Food Waste Analytics"
+    )
 
     df = create_dataframe()
 
     if df.empty:
 
         st.info(
-            "Waste analytics will appear after "
-            "you add food records."
+            "Add pantry records to "
+            "view analytics."
         )
 
     else:
@@ -789,53 +1820,253 @@ elif page == "📊 Waste Analytics":
             == "Consumed"
         ]
 
-        total_waste_cost = wasted_df[
-            "Cost (RM)"
-        ].sum()
+        available_df = df[
+            df["Item Status"]
+            == "Available"
+        ]
 
-        col1, col2, col3 = st.columns(3)
-
-        col1.metric(
-            "🗑️ Foods Wasted",
-            len(wasted_df)
+        waste_cost = (
+            wasted_df[
+                "Cost (RM)"
+            ].sum()
         )
 
-        col2.metric(
-            "✅ Foods Consumed",
+        consumed_value = (
+            consumed_df[
+                "Cost (RM)"
+            ].sum()
+        )
+
+        finished_items = (
+            len(wasted_df)
+            +
             len(consumed_df)
         )
 
-        col3.metric(
-            "💸 Waste Cost",
-            f"RM {total_waste_cost:.2f}"
-        )
+        if finished_items > 0:
 
-        st.divider()
-
-        if wasted_df.empty:
-
-            st.success(
-                "No food has been recorded "
-                "as wasted yet. Great job!"
+            waste_rate = (
+                len(wasted_df)
+                /
+                finished_items
+                *
+                100
             )
 
         else:
 
-            st.subheader(
-                "Waste by Category"
+            waste_rate = 0
+
+        # -------------------------------------------------
+        # KPI
+        # -------------------------------------------------
+
+        c1, c2, c3, c4 = (
+            st.columns(4)
+        )
+
+        c1.metric(
+            "✅ Consumed",
+            len(consumed_df)
+        )
+
+        c2.metric(
+            "🗑️ Wasted",
+            len(wasted_df)
+        )
+
+        c3.metric(
+            "💸 Waste Cost",
+            f"RM {waste_cost:.2f}"
+        )
+
+        c4.metric(
+            "📉 Waste Rate",
+            f"{waste_rate:.1f}%"
+        )
+
+        st.divider()
+
+        # -------------------------------------------------
+        # CONSUMED VS WASTED
+        # -------------------------------------------------
+
+        if finished_items > 0:
+
+            outcome_df = pd.DataFrame(
+                {
+                    "Status": [
+                        "Consumed",
+                        "Wasted"
+                    ],
+                    "Items": [
+                        len(consumed_df),
+                        len(wasted_df)
+                    ]
+                }
             )
+
+            fig_outcome = px.pie(
+                outcome_df,
+                names="Status",
+                values="Items",
+                hole=0.45,
+                title=(
+                    "Consumed vs Wasted "
+                    "Food"
+                )
+            )
+
+            st.plotly_chart(
+                fig_outcome,
+                use_container_width=True
+            )
+
+        # -------------------------------------------------
+        # WASTE BY CATEGORY
+        # -------------------------------------------------
+
+        if not wasted_df.empty:
 
             waste_category = (
                 wasted_df
                 .groupby("Category")
-                .size()
-                .reset_index(
-                    name="Items Wasted"
+                .agg(
+                    Items_Wasted=(
+                        "Food",
+                        "count"
+                    ),
+                    Waste_Cost=(
+                        "Cost (RM)",
+                        "sum"
+                    )
                 )
+                .reset_index()
             )
 
-            st.bar_chart(
+            fig_category = px.bar(
                 waste_category,
                 x="Category",
-                y="Items Wasted"
+                y="Items_Wasted",
+                title=(
+                    "Food Waste "
+                    "by Category"
+                ),
+                labels={
+                    "Items_Wasted":
+                        "Items Wasted"
+                }
+            )
+
+            st.plotly_chart(
+                fig_category,
+                use_container_width=True
+            )
+
+            fig_cost = px.bar(
+                waste_category,
+                x="Category",
+                y="Waste_Cost",
+                title=(
+                    "Estimated Waste Cost "
+                    "by Category"
+                ),
+                labels={
+                    "Waste_Cost":
+                        "Waste Cost (RM)"
+                }
+            )
+
+            st.plotly_chart(
+                fig_cost,
+                use_container_width=True
+            )
+
+        else:
+
+            st.success(
+                "No food has been marked "
+                "as wasted yet."
+            )
+
+        # -------------------------------------------------
+        # AUTOMATIC INSIGHTS
+        # -------------------------------------------------
+
+        st.divider()
+
+        st.subheader(
+            "💡 Smart Pantry Insights"
+        )
+
+        if wasted_df.empty:
+
+            st.success(
+                "No food waste has been "
+                "recorded. Continue checking "
+                "expiry priorities and meal "
+                "recommendations."
+            )
+
+        else:
+
+            category_counts = (
+                wasted_df[
+                    "Category"
+                ]
+                .value_counts()
+            )
+
+            top_category = (
+                category_counts
+                .idxmax()
+            )
+
+            top_count = int(
+                category_counts.max()
+            )
+
+            st.warning(
+                f"**{top_category}** is "
+                f"currently your most "
+                f"frequently wasted category "
+                f"with {top_count} "
+                f"wasted item(s)."
+            )
+
+            st.write(
+                "Consider purchasing smaller "
+                "quantities or prioritising "
+                "this category in meal "
+                "planning."
+            )
+
+        if waste_rate <= 10 and (
+            finished_items > 0
+        ):
+
+            st.success(
+                "Your recorded waste rate "
+                "is currently low. Keep using "
+                "expiry alerts to maintain "
+                "this performance."
+            )
+
+        elif waste_rate >= 30:
+
+            st.warning(
+                "Your waste rate is relatively "
+                "high. Check the Dashboard's "
+                "'Use These Foods First' "
+                "section more frequently."
+            )
+
+        if consumed_value > waste_cost:
+
+            st.info(
+                f"Recorded consumed food value "
+                f"is RM {consumed_value:.2f}, "
+                f"compared with RM "
+                f"{waste_cost:.2f} recorded "
+                f"as waste."
             )
