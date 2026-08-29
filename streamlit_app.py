@@ -11,7 +11,7 @@ from datetime import date, datetime, timedelta
 
 
 # ============================================================
-# PAGE CONFIGURATION
+# PAGE CONFIG
 # ============================================================
 
 st.set_page_config(
@@ -23,32 +23,15 @@ st.set_page_config(
 
 
 # ============================================================
-# THEME-AWARE CSS
+# MAIN WEBSITE CSS
 # ============================================================
 
 CUSTOM_CSS = """
 <style>
 
-/* =========================================================
-   THEME VARIABLES
-   ========================================================= */
-
 :root {
-
-    --sp-bg:
-        var(--background-color);
-
-    --sp-surface:
-        var(--secondary-background-color);
-
-    --sp-text:
-        var(--text-color);
-
-    --sp-primary:
-        #2f704f;
-
-    --sp-primary-light:
-        #55936d;
+    --sp-surface: var(--secondary-background-color);
+    --sp-text: var(--text-color);
 
     --sp-border:
         color-mix(
@@ -64,30 +47,29 @@ CUSTOM_CSS = """
             transparent
         );
 
-    --sp-hover:
-        color-mix(
-            in srgb,
-            #4f946a 12%,
-            var(--secondary-background-color)
-        );
-
     --sp-green-soft:
         color-mix(
             in srgb,
             #4f946a 14%,
             var(--secondary-background-color)
         );
+
+    --sp-hover:
+        color-mix(
+            in srgb,
+            #4f946a 11%,
+            var(--secondary-background-color)
+        );
 }
 
 
 /* =========================================================
-   GLOBAL
+   GENERAL PAGE
    ========================================================= */
 
 html,
 body,
 [class*="css"] {
-
     font-family:
         Inter,
         -apple-system,
@@ -98,17 +80,16 @@ body,
 
 
 .block-container {
-
     max-width: 1280px;
 
-    padding-top: 2.2rem;
+    /* Extra room below Streamlit toolbar */
+    padding-top: 3.4rem !important;
 
     padding-bottom: 4rem;
 }
 
 
 header[data-testid="stHeader"] {
-
     background:
         color-mix(
             in srgb,
@@ -123,14 +104,13 @@ header[data-testid="stHeader"] {
    ========================================================= */
 
 .sp-hero {
-
     width: 100%;
-
     box-sizing: border-box;
 
     padding: 35px 40px;
 
-    margin: 0 0 30px 0;
+    margin:
+        0.4rem 0 32px 0;
 
     border-radius: 24px;
 
@@ -151,16 +131,16 @@ header[data-testid="stHeader"] {
 
 
 .sp-hero-badge {
-
     display: inline-flex;
 
     align-items: center;
 
     gap: 6px;
 
-    padding: 6px 11px;
+    padding:
+        6px 11px;
 
-    margin-bottom: 13px;
+    margin-bottom: 14px;
 
     border:
         1px solid
@@ -180,7 +160,6 @@ header[data-testid="stHeader"] {
 
 
 .sp-hero-title {
-
     font-size: 42px;
 
     font-weight: 850;
@@ -194,7 +173,6 @@ header[data-testid="stHeader"] {
 
 
 .sp-hero-subtitle {
-
     max-width: 780px;
 
     font-size: 16px;
@@ -207,13 +185,11 @@ header[data-testid="stHeader"] {
 
 
 /* =========================================================
-   PAGE HEADERS
+   PAGE TITLES
    ========================================================= */
 
 .sp-kicker {
-
-    color:
-        var(--sp-muted);
+    color: var(--sp-muted);
 
     font-size: 11px;
 
@@ -228,9 +204,7 @@ header[data-testid="stHeader"] {
 
 
 .sp-page-title {
-
-    color:
-        var(--sp-text);
+    color: var(--sp-text);
 
     font-size: 30px;
 
@@ -245,9 +219,7 @@ header[data-testid="stHeader"] {
 
 
 .sp-page-description {
-
-    color:
-        var(--sp-muted);
+    color: var(--sp-muted);
 
     font-size: 14px;
 
@@ -258,11 +230,10 @@ header[data-testid="stHeader"] {
 
 
 /* =========================================================
-   KPI CARDS
+   METRIC CARDS
    ========================================================= */
 
 .sp-metric-card {
-
     min-height: 132px;
 
     padding: 20px;
@@ -288,7 +259,6 @@ header[data-testid="stHeader"] {
 
 
 .sp-metric-card:hover {
-
     transform:
         translateY(-2px);
 
@@ -306,7 +276,6 @@ header[data-testid="stHeader"] {
 
 
 .sp-metric-icon {
-
     font-size: 25px;
 
     margin-bottom: 10px;
@@ -314,9 +283,7 @@ header[data-testid="stHeader"] {
 
 
 .sp-metric-value {
-
-    color:
-        var(--sp-text);
+    color: var(--sp-text);
 
     font-size: 27px;
 
@@ -329,9 +296,7 @@ header[data-testid="stHeader"] {
 
 
 .sp-metric-label {
-
-    color:
-        var(--sp-muted);
+    color: var(--sp-muted);
 
     font-size: 13px;
 
@@ -340,11 +305,10 @@ header[data-testid="stHeader"] {
 
 
 /* =========================================================
-   STATUS BADGES
+   STATUS
    ========================================================= */
 
 .sp-status {
-
     display: inline-block;
 
     padding: 5px 10px;
@@ -358,41 +322,31 @@ header[data-testid="stHeader"] {
 
 
 .sp-fresh {
-
     color: #166534;
-
     background: #dcfce7;
 }
 
 
 .sp-use {
-
     color: #854d0e;
-
     background: #fef9c3;
 }
 
 
 .sp-soon {
-
     color: #9a3412;
-
     background: #ffedd5;
 }
 
 
 .sp-urgent {
-
     color: #991b1b;
-
     background: #fee2e2;
 }
 
 
 .sp-expired {
-
     color: #374151;
-
     background: #e5e7eb;
 }
 
@@ -402,10 +356,10 @@ header[data-testid="stHeader"] {
    ========================================================= */
 
 .sp-ai-panel {
-
     padding: 20px 22px;
 
-    margin: 10px 0 18px 0;
+    margin:
+        10px 0 18px 0;
 
     border-radius: 18px;
 
@@ -423,9 +377,7 @@ header[data-testid="stHeader"] {
 
 
 .sp-ai-title {
-
-    color:
-        var(--sp-text);
+    color: var(--sp-text);
 
     font-size: 19px;
 
@@ -436,9 +388,7 @@ header[data-testid="stHeader"] {
 
 
 .sp-ai-description {
-
-    color:
-        var(--sp-muted);
+    color: var(--sp-muted);
 
     font-size: 13px;
 
@@ -447,11 +397,10 @@ header[data-testid="stHeader"] {
 
 
 /* =========================================================
-   STREAMLIT CONTAINERS
+   CONTAINERS
    ========================================================= */
 
 div[data-testid="stVerticalBlockBorderWrapper"] {
-
     border-radius: 18px !important;
 
     border-color:
@@ -460,12 +409,11 @@ div[data-testid="stVerticalBlockBorderWrapper"] {
 
 
 /* =========================================================
-   GENERAL BUTTON
+   BUTTONS
    ========================================================= */
 
 .stButton > button,
 .stDownloadButton > button {
-
     border-radius: 11px;
 
     font-weight: 650;
@@ -478,7 +426,6 @@ div[data-testid="stVerticalBlockBorderWrapper"] {
 
 .stButton > button:hover,
 .stDownloadButton > button:hover {
-
     transform:
         translateY(-1px);
 
@@ -489,118 +436,10 @@ div[data-testid="stVerticalBlockBorderWrapper"] {
 
 
 /* =========================================================
-   FIXED DECIMAL COST INPUT
-   ========================================================= */
-
-/*
-Ringgit field expands toward the LEFT.
-The right edge stays beside the decimal point.
-*/
-
-input[aria-label="Ringgit amount"] {
-
-    text-align: right !important;
-
-    font-size: 18px !important;
-
-    font-weight: 700 !important;
-
-    font-variant-numeric:
-        tabular-nums;
-
-    letter-spacing: .4px;
-}
-
-
-/*
-Sen always remains after the fixed decimal.
-*/
-
-input[aria-label="Sen amount"] {
-
-    text-align: left !important;
-
-    font-size: 18px !important;
-
-    font-weight: 700 !important;
-
-    font-variant-numeric:
-        tabular-nums;
-
-    letter-spacing: .4px;
-}
-
-
-/*
-Fixed decimal point.
-It never moves.
-*/
-
-.sp-currency-dot {
-
-    width: 100%;
-
-    height: 38px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    color:
-        var(--sp-text);
-
-    font-size: 28px;
-
-    line-height: 1;
-
-    font-weight: 900;
-
-    padding-top: 4px;
-}
-
-
-.sp-rm-label {
-
-    height: 38px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: flex-end;
-
-    color:
-        var(--sp-text);
-
-    font-size: 15px;
-
-    font-weight: 800;
-}
-
-
-.sp-currency-help {
-
-    color:
-        var(--sp-muted);
-
-    font-size: 11px;
-
-    line-height: 1.45;
-
-    margin-top: -5px;
-
-    margin-bottom: 10px;
-}
-
-
-/* =========================================================
    SIDEBAR
    ========================================================= */
 
 section[data-testid="stSidebar"] {
-
     background:
         color-mix(
             in srgb,
@@ -616,7 +455,6 @@ section[data-testid="stSidebar"] {
 
 section[data-testid="stSidebar"]
 div[data-testid="stSidebarContent"] {
-
     padding-top: .45rem;
 }
 
@@ -626,10 +464,10 @@ div[data-testid="stSidebarContent"] {
    ========================================================= */
 
 .sp-sidebar-brand {
-
     padding: 16px;
 
-    margin: 3px 2px 17px 2px;
+    margin:
+        3px 2px 17px 2px;
 
     border-radius: 18px;
 
@@ -647,7 +485,6 @@ div[data-testid="stSidebarContent"] {
 
 
 .sp-sidebar-brand-row {
-
     display: flex;
 
     align-items: center;
@@ -657,7 +494,6 @@ div[data-testid="stSidebarContent"] {
 
 
 .sp-sidebar-logo {
-
     width: 43px;
 
     height: 43px;
@@ -686,9 +522,7 @@ div[data-testid="stSidebarContent"] {
 
 
 .sp-sidebar-name {
-
-    color:
-        var(--sp-text);
+    color: var(--sp-text);
 
     font-size: 18px;
 
@@ -699,9 +533,7 @@ div[data-testid="stSidebarContent"] {
 
 
 .sp-sidebar-sub {
-
-    color:
-        var(--sp-muted);
+    color: var(--sp-muted);
 
     font-size: 11px;
 
@@ -710,12 +542,12 @@ div[data-testid="stSidebarContent"] {
 
 
 .sp-live-badge {
-
     display: inline-block;
 
     margin-top: 12px;
 
-    padding: 5px 9px;
+    padding:
+        5px 9px;
 
     border-radius: 999px;
 
@@ -731,21 +563,18 @@ div[data-testid="stSidebarContent"] {
     font-size: 10px;
 
     font-weight: 800;
-
-    letter-spacing: .4px;
 }
 
 
 /* =========================================================
-   SIDEBAR SECTION LABEL
+   SIDEBAR SECTION TITLE
    ========================================================= */
 
 .sp-sidebar-section {
+    color: var(--sp-muted);
 
-    color:
-        var(--sp-muted);
-
-    margin: 17px 10px 6px 10px;
+    margin:
+        17px 10px 6px 10px;
 
     font-size: 10px;
 
@@ -758,12 +587,11 @@ div[data-testid="stSidebarContent"] {
 
 
 /* =========================================================
-   SIDEBAR BUTTON NAVIGATION
+   WEBSITE-STYLE NAVIGATION
    ========================================================= */
 
 section[data-testid="stSidebar"]
 .stButton > button {
-
     width: 100% !important;
 
     min-height: 42px;
@@ -800,7 +628,6 @@ section[data-testid="stSidebar"]
 
 section[data-testid="stSidebar"]
 .stButton > button:hover {
-
     transform:
         translateX(2px);
 
@@ -814,7 +641,6 @@ section[data-testid="stSidebar"]
 
 section[data-testid="stSidebar"]
 .stButton > button[kind="primary"] {
-
     background:
         linear-gradient(
             90deg,
@@ -850,14 +676,14 @@ section[data-testid="stSidebar"]
 
 
 /* =========================================================
-   OLLAMA STATUS
+   AI STATUS
    ========================================================= */
 
 .sp-ai-status {
-
     padding: 14px;
 
-    margin: 7px 2px;
+    margin:
+        7px 2px;
 
     border-radius: 15px;
 
@@ -871,7 +697,6 @@ section[data-testid="stSidebar"]
 
 
 .sp-ai-row {
-
     display: flex;
 
     align-items: center;
@@ -881,9 +706,7 @@ section[data-testid="stSidebar"]
 
 
 .sp-ai-status-title {
-
-    color:
-        var(--sp-text);
+    color: var(--sp-text);
 
     font-size: 13px;
 
@@ -892,7 +715,6 @@ section[data-testid="stSidebar"]
 
 
 .sp-online {
-
     width: 8px;
 
     height: 8px;
@@ -908,7 +730,6 @@ section[data-testid="stSidebar"]
 
 
 .sp-offline {
-
     width: 8px;
 
     height: 8px;
@@ -920,28 +741,21 @@ section[data-testid="stSidebar"]
 
 
 .sp-ai-model {
-
     margin-top: 7px;
 
-    color:
-        var(--sp-muted);
+    color: var(--sp-muted);
 
     font-size: 11px;
 }
 
 
-/* =========================================================
-   SIDEBAR FOOTER
-   ========================================================= */
-
 .sp-sidebar-footer {
-
-    color:
-        var(--sp-muted);
+    color: var(--sp-muted);
 
     text-align: center;
 
-    padding: 18px 4px 5px 4px;
+    padding:
+        18px 4px 5px 4px;
 
     font-size: 10px;
 
@@ -949,41 +763,13 @@ section[data-testid="stSidebar"]
 }
 
 
-section[data-testid="stSidebar"] hr {
-
-    border-color:
-        var(--sp-border);
-}
-
-
 /* =========================================================
-   LIGHT MODE
-   ========================================================= */
-
-@media (prefers-color-scheme: light) {
-
-    .sp-hero {
-
-        background:
-            linear-gradient(
-                135deg,
-                #174b35 0%,
-                #2d7250 58%,
-                #6f9b7c 100%
-            );
-    }
-
-}
-
-
-/* =========================================================
-   DARK MODE
+   DARK THEME
    ========================================================= */
 
 @media (prefers-color-scheme: dark) {
 
     .sp-hero {
-
         background:
             linear-gradient(
                 135deg,
@@ -993,21 +779,719 @@ section[data-testid="stSidebar"] hr {
             );
     }
 
-    .sp-metric-card {
-
-        box-shadow:
-            0 9px 28px
-            rgba(0,0,0,.18);
-    }
-
 }
 
 </style>
 """
 
 
-st.html(
-    CUSTOM_CSS
+st.html(CUSTOM_CSS)
+
+
+# ============================================================
+# TNG-STYLE MONEY INPUT COMPONENT
+# ============================================================
+#
+# Behaviour:
+#
+# Start:   RM 0.00
+#
+# Type 1:  RM 0.01
+# Type 2:  RM 0.12
+# Type 3:  RM 1.23
+# Type 4:  RM 12.34
+#
+# Backspace:
+# RM 12.34 -> RM 1.23
+#
+# The decimal point never moves.
+#
+# ============================================================
+
+MONEY_HTML = """
+<div class="money-component">
+
+    <label class="money-label">
+        Total Cost (RM) <span>*</span>
+    </label>
+
+    <div class="money-field">
+
+        <div class="money-prefix">
+            RM
+        </div>
+
+        <input
+            id="smartpantry-money"
+            type="text"
+            inputmode="numeric"
+            autocomplete="off"
+            spellcheck="false"
+            aria-label="Total Cost"
+        />
+
+    </div>
+
+    <div class="money-help">
+        Enter the amount using numbers.
+        Example: 1 → 0.01, 12 → 0.12, 123 → 1.23
+    </div>
+
+</div>
+"""
+
+
+MONEY_CSS = """
+.money-component {
+    width: 100%;
+
+    font-family:
+        var(--st-font),
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+}
+
+
+.money-label {
+    display: block;
+
+    color:
+        var(--st-text-color);
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    margin-bottom: 7px;
+}
+
+
+.money-label span {
+    color: #ef4444;
+}
+
+
+.money-field {
+    width: 100%;
+
+    height: 42px;
+
+    box-sizing: border-box;
+
+    display: flex;
+
+    align-items: center;
+
+    border:
+        1px solid
+        color-mix(
+            in srgb,
+            var(--st-text-color) 18%,
+            transparent
+        );
+
+    border-radius:
+        0.5rem;
+
+    background:
+        var(--st-secondary-background-color);
+
+    transition:
+        border-color .15s ease,
+        box-shadow .15s ease;
+}
+
+
+.money-field:focus-within {
+    border-color:
+        var(--st-primary-color);
+
+    box-shadow:
+        0 0 0 1px
+        var(--st-primary-color);
+}
+
+
+.money-prefix {
+    flex-shrink: 0;
+
+    padding-left: 13px;
+
+    padding-right: 7px;
+
+    color:
+        var(--st-text-color);
+
+    font-size: 14px;
+
+    font-weight: 700;
+}
+
+
+#smartpantry-money {
+    width: 100%;
+
+    height: 100%;
+
+    box-sizing: border-box;
+
+    border: none;
+
+    outline: none;
+
+    background: transparent;
+
+    color:
+        var(--st-text-color);
+
+    padding:
+        0 13px 0 4px;
+
+    font-family:
+        var(--st-font),
+        Inter,
+        sans-serif;
+
+    font-size: 16px;
+
+    font-weight: 600;
+
+    /*
+    Critical:
+    amount is right aligned.
+
+    Therefore .00 remains fixed at
+    the right side while numbers grow left.
+    */
+    text-align: right;
+
+    font-variant-numeric:
+        tabular-nums;
+
+    caret-color:
+        transparent;
+
+    cursor: text;
+}
+
+
+.money-help {
+    margin-top: 5px;
+
+    color:
+        color-mix(
+            in srgb,
+            var(--st-text-color) 58%,
+            transparent
+        );
+
+    font-size: 11px;
+
+    line-height: 1.4;
+}
+"""
+
+
+MONEY_JS = """
+export default function(component) {
+
+    const {
+        parentElement,
+        data,
+        setStateValue
+    } = component;
+
+
+    const input =
+        parentElement.querySelector(
+            "#smartpantry-money"
+        );
+
+
+    /*
+    Python stores the value as TOTAL CENTS.
+
+    Examples:
+
+    1 cent    = 1
+    12 cents  = 12
+    RM 1.23   = 123
+    RM 12.34  = 1234
+    */
+
+    let centsValue =
+        Number.isFinite(Number(data?.cents))
+            ? Math.max(
+                0,
+                Math.trunc(
+                    Number(data.cents)
+                )
+            )
+            : 0;
+
+
+    /*
+    Local raw sequence of typed digits.
+
+    1
+    12
+    123
+    1234
+    */
+
+    let digits =
+        centsValue === 0
+            ? ""
+            : String(centsValue);
+
+
+    const MAX_DIGITS = 11;
+
+
+    function cleanDigits(value) {
+
+        return String(value ?? "")
+            .replace(/\\D/g, "")
+            .slice(0, MAX_DIGITS);
+    }
+
+
+    function formatMoney(rawDigits) {
+
+        let raw =
+            cleanDigits(rawDigits);
+
+
+        if (raw === "") {
+
+            return "0.00";
+        }
+
+
+        /*
+        Pad so that the last 2 digits
+        always represent cents.
+
+        1   -> 001 -> 0.01
+        12  -> 012 -> 0.12
+        123 -> 123 -> 1.23
+        */
+
+        const padded =
+            raw.padStart(
+                3,
+                "0"
+            );
+
+
+        let whole =
+            padded.slice(
+                0,
+                -2
+            );
+
+
+        const cents =
+            padded.slice(
+                -2
+            );
+
+
+        /*
+        Remove unnecessary leading zeros.
+        */
+
+        whole =
+            String(
+                parseInt(
+                    whole,
+                    10
+                ) || 0
+            );
+
+
+        /*
+        Add thousands separators.
+        */
+
+        const formattedWhole =
+            Number(
+                whole
+            ).toLocaleString(
+                "en-MY"
+            );
+
+
+        return (
+            formattedWhole
+            +
+            "."
+            +
+            cents
+        );
+    }
+
+
+    function updateDisplay() {
+
+        input.value =
+            formatMoney(
+                digits
+            );
+
+
+        /*
+        Always keep cursor at end.
+        */
+
+        requestAnimationFrame(
+            () => {
+
+                try {
+
+                    const end =
+                        input.value.length;
+
+                    input.setSelectionRange(
+                        end,
+                        end
+                    );
+
+                } catch (_) {}
+
+            }
+        );
+    }
+
+
+    function commit() {
+
+        const numericCents =
+            digits === ""
+                ? 0
+                : parseInt(
+                    digits,
+                    10
+                ) || 0;
+
+
+        updateDisplay();
+
+
+        setStateValue(
+            "cents",
+            numericCents
+        );
+    }
+
+
+    /*
+    Initial render
+    */
+
+    updateDisplay();
+
+
+    /*
+    Desktop keyboard handling
+    */
+
+    input.onkeydown = (event) => {
+
+        const key =
+            event.key;
+
+
+        /*
+        Number key
+        */
+
+        if (/^[0-9]$/.test(key)) {
+
+            event.preventDefault();
+
+
+            if (
+                digits.length
+                <
+                MAX_DIGITS
+            ) {
+
+                digits += key;
+
+                commit();
+            }
+
+            return;
+        }
+
+
+        /*
+        Backspace removes most recently
+        entered digit.
+
+        RM 12.34
+        -> raw 1234
+        -> raw 123
+        -> RM 1.23
+        */
+
+        if (
+            key === "Backspace"
+        ) {
+
+            event.preventDefault();
+
+
+            digits =
+                digits.slice(
+                    0,
+                    -1
+                );
+
+
+            commit();
+
+            return;
+        }
+
+
+        /*
+        Delete / Escape clears amount
+        */
+
+        if (
+            key === "Delete"
+            ||
+            key === "Escape"
+        ) {
+
+            event.preventDefault();
+
+
+            digits = "";
+
+
+            commit();
+
+            return;
+        }
+
+
+        /*
+        Allow navigation
+        */
+
+        if (
+            key === "Tab"
+            ||
+            key === "Shift"
+        ) {
+
+            return;
+        }
+
+
+        /*
+        Allow copy / paste
+        */
+
+        if (
+            event.ctrlKey
+            ||
+            event.metaKey
+        ) {
+
+            const lower =
+                key.toLowerCase();
+
+
+            if (
+                lower === "c"
+                ||
+                lower === "v"
+                ||
+                lower === "a"
+            ) {
+
+                return;
+            }
+
+        }
+
+
+        /*
+        Prevent letters, dots,
+        minus signs etc.
+        */
+
+        event.preventDefault();
+
+    };
+
+
+    /*
+    Paste support
+
+    Paste:
+    12.34
+    becomes
+    RM 12.34
+    */
+
+    input.onpaste = (event) => {
+
+        event.preventDefault();
+
+
+        const pasted =
+            event.clipboardData
+                ?.getData("text")
+                ?? "";
+
+
+        const clean =
+            cleanDigits(
+                pasted
+            );
+
+
+        if (clean !== "") {
+
+            digits =
+                clean.slice(
+                    -MAX_DIGITS
+                );
+
+
+            commit();
+        }
+
+    };
+
+
+    /*
+    Mobile keyboard handling.
+
+    Some mobile keyboards use
+    beforeinput instead of keydown.
+    */
+
+    input.onbeforeinput = (event) => {
+
+        const type =
+            event.inputType;
+
+
+        if (
+            type
+            ===
+            "insertText"
+        ) {
+
+            const value =
+                event.data ?? "";
+
+
+            if (
+                /^[0-9]$/.test(
+                    value
+                )
+            ) {
+
+                event.preventDefault();
+
+
+                if (
+                    digits.length
+                    <
+                    MAX_DIGITS
+                ) {
+
+                    digits +=
+                        value;
+
+
+                    commit();
+                }
+
+            } else {
+
+                event.preventDefault();
+
+            }
+
+        }
+
+
+        if (
+            type
+            ===
+            "deleteContentBackward"
+        ) {
+
+            event.preventDefault();
+
+
+            digits =
+                digits.slice(
+                    0,
+                    -1
+                );
+
+
+            commit();
+        }
+
+    };
+
+
+    /*
+    Clicking anywhere in the field
+    continues entry from the end.
+    */
+
+    input.onclick = () => {
+
+        const end =
+            input.value.length;
+
+
+        input.setSelectionRange(
+            end,
+            end
+        );
+
+    };
+
+
+    input.onfocus = () => {
+
+        const end =
+            input.value.length;
+
+
+        input.setSelectionRange(
+            end,
+            end
+        );
+
+    };
+
+}
+"""
+
+
+money_component = (
+    st.components.v2.component(
+        name="smartpantry_money_input",
+        html=MONEY_HTML,
+        css=MONEY_CSS,
+        js=MONEY_JS,
+    )
 )
 
 
@@ -1016,45 +1500,27 @@ st.html(
 # ============================================================
 
 DEFAULT_SESSION = {
+    "pantry_items": [],
+    "activity_log": [],
 
-    "pantry_items":
-        [],
-
-    "activity_log":
-        [],
-
-    "ai_meal_plan":
-        None,
-
-    "ai_plan_raw":
-        "",
-
-    "ai_plan_error":
-        None,
-
-    "ai_plan_signature":
-        "",
-
-    "ai_attempt_signature":
-        "",
-
-    "ai_last_updated":
-        None,
+    "ai_meal_plan": None,
+    "ai_plan_raw": "",
+    "ai_plan_error": None,
+    "ai_plan_signature": "",
+    "ai_attempt_signature": "",
+    "ai_last_updated": None,
 
     "planner_preference":
         "Practical everyday meals",
 
-    "planner_servings":
-        2,
+    "planner_servings": 2,
 
     "planner_time":
         "30 minutes",
 
-    "auto_ai_planner":
-        True,
+    "auto_ai_planner": True,
 
-    "flash_message":
-        "",
+    "flash_message": "",
 
     "active_page":
         "Overview",
@@ -1065,7 +1531,9 @@ for key, value in (
     DEFAULT_SESSION.items()
 ):
 
-    if key not in (
+    if (
+        key
+        not in
         st.session_state
     ):
 
@@ -1079,7 +1547,6 @@ for key, value in (
 # ============================================================
 
 CATEGORIES = [
-
     "Dairy",
     "Meat",
     "Vegetables",
@@ -1095,7 +1562,6 @@ CATEGORIES = [
 
 
 UNITS = [
-
     "Piece",
     "Pack",
     "Bottle",
@@ -1109,7 +1575,6 @@ UNITS = [
 
 
 STORAGE_LOCATIONS = [
-
     "Refrigerator",
     "Freezer",
     "Pantry",
@@ -1119,7 +1584,6 @@ STORAGE_LOCATIONS = [
 
 
 NAV_ITEMS = [
-
     (
         "Overview",
         "🏠"
@@ -1153,7 +1617,7 @@ NAV_ITEMS = [
 
 
 # ============================================================
-# HTML HELPERS
+# PAGE HELPERS
 # ============================================================
 
 def page_header(
@@ -1211,7 +1675,6 @@ def status_badge(
 ):
 
     mapping = {
-
         "Fresh":
             (
                 "sp-fresh",
@@ -1244,7 +1707,7 @@ def status_badge(
     }
 
 
-    css_class, text = (
+    css_class, label = (
         mapping.get(
             status,
             (
@@ -1263,9 +1726,88 @@ def status_badge(
                 {css_class}
             "
         >
-            {text}
+            {label}
         </span>
         """
+    )
+
+
+# ============================================================
+# TNG MONEY WRAPPER
+# ============================================================
+
+def tng_money_input(
+    key="smartpantry_cost"
+):
+
+    component_state = (
+        st.session_state.get(
+            key,
+            {}
+        )
+    )
+
+
+    if isinstance(
+        component_state,
+        dict
+    ):
+
+        current_cents = int(
+            component_state.get(
+                "cents",
+                0
+            )
+            or 0
+        )
+
+    else:
+
+        current_cents = int(
+            getattr(
+                component_state,
+                "cents",
+                0
+            )
+            or 0
+        )
+
+
+    result = (
+        money_component(
+
+            data={
+                "cents":
+                    current_cents
+            },
+
+            default={
+                "cents":
+                    current_cents
+            },
+
+            key=key,
+
+            on_cents_change=
+                lambda: None,
+        )
+    )
+
+
+    returned_cents = int(
+        getattr(
+            result,
+            "cents",
+            current_cents
+        )
+        or 0
+    )
+
+
+    return (
+        returned_cents
+        /
+        100
     )
 
 
@@ -1303,7 +1845,7 @@ def add_activity(
 
 
 # ============================================================
-# DATE HELPER
+# DATE HELPERS
 # ============================================================
 
 def to_date(
@@ -1320,9 +1862,7 @@ def to_date(
 
     return (
         datetime.strptime(
-            str(
-                value
-            ),
+            str(value),
             "%Y-%m-%d"
         ).date()
     )
@@ -1337,13 +1877,10 @@ def expiry_info(
 ):
 
     days_left = (
-
         to_date(
             expiry_date
         )
-
         -
-
         date.today()
     ).days
 
@@ -1397,15 +1934,15 @@ def expiry_message(
 
     if days_left < 0:
 
-        days = abs(
+        number = abs(
             days_left
         )
 
         return (
             f"Expired "
-            f"{days} "
+            f"{number} "
             f"day"
-            f"{'s' if days != 1 else ''} "
+            f"{'s' if number != 1 else ''} "
             f"ago"
         )
 
@@ -1457,31 +1994,27 @@ def shelf_progress(
 
 
     total_days = max(
-
         (
             expiry
             -
             purchase
         ).days,
-
         1
     )
 
 
-    elapsed_days = max(
-
+    elapsed = max(
         (
             date.today()
             -
             purchase
         ).days,
-
         0
     )
 
 
     progress = (
-        elapsed_days
+        elapsed
         /
         total_days
     )
@@ -1497,7 +2030,7 @@ def shelf_progress(
 
 
 # ============================================================
-# DATAFRAME
+# CREATE DATAFRAME
 # ============================================================
 
 def create_dataframe():
@@ -1511,10 +2044,9 @@ def create_dataframe():
         ]
     ):
 
-
         (
             days_left,
-            expiry_status,
+            status,
             priority
         ) = expiry_info(
             item[
@@ -1564,7 +2096,7 @@ def create_dataframe():
                     days_left,
 
                 "Expiry Status":
-                    expiry_status,
+                    status,
 
                 "Priority":
                     priority,
@@ -1595,10 +2127,8 @@ def create_dataframe():
         )
 
 
-    return (
-        pd.DataFrame(
-            rows
-        )
+    return pd.DataFrame(
+        rows
     )
 
 
@@ -1608,7 +2138,7 @@ def create_dataframe():
 
 def mark_item(
     item_id,
-    new_status
+    status
 ):
 
     for item in (
@@ -1616,7 +2146,6 @@ def mark_item(
             "pantry_items"
         ]
     ):
-
 
         if (
             item[
@@ -1626,12 +2155,9 @@ def mark_item(
             item_id
         ):
 
-
             item[
                 "item_status"
-            ] = (
-                new_status
-            )
+            ] = status
 
 
             item[
@@ -1642,11 +2168,10 @@ def mark_item(
 
 
             if (
-                new_status
+                status
                 ==
                 "Consumed"
             ):
-
 
                 add_activity(
                     f"✅ "
@@ -1656,11 +2181,10 @@ def mark_item(
 
 
             elif (
-                new_status
+                status
                 ==
                 "Wasted"
             ):
-
 
                 add_activity(
                     f"🗑️ "
@@ -1669,7 +2193,7 @@ def mark_item(
                 )
 
 
-            break
+            return
 
 
 def delete_item(
@@ -1685,7 +2209,6 @@ def delete_item(
         ]
     ):
 
-
         if (
             item[
                 "id"
@@ -1694,13 +2217,11 @@ def delete_item(
             item_id
         ):
 
-
             item_name = (
                 item[
                     "item_name"
                 ]
             )
-
 
             break
 
@@ -1708,13 +2229,13 @@ def delete_item(
     st.session_state[
         "pantry_items"
     ] = [
-
         item
 
-        for item
-        in st.session_state[
-            "pantry_items"
-        ]
+        for item in (
+            st.session_state[
+                "pantry_items"
+            ]
+        )
 
         if (
             item[
@@ -1727,7 +2248,6 @@ def delete_item(
 
 
     if item_name:
-
 
         add_activity(
             f"❌ "
@@ -1805,26 +2325,16 @@ def pantry_health_score(
 
 
     score = (
-
         100
 
         -
-
-        urgent
-        *
-        3
+        urgent * 3
 
         -
-
-        expired
-        *
-        5
+        expired * 5
 
         -
-
-        wasted
-        *
-        2
+        wasted * 2
     )
 
 
@@ -1872,255 +2382,7 @@ def pantry_health_score(
 
 
 # ============================================================
-# FIXED DECIMAL COST INPUT
-# ============================================================
-
-def currency_input():
-
-    st.markdown(
-        "**Total Cost (RM) \\***"
-    )
-
-
-    rm_col, whole_col, dot_col, sen_col = (
-        st.columns(
-            [
-                0.55,
-                4.2,
-                0.32,
-                1.2
-            ],
-            gap="small"
-        )
-    )
-
-
-    with rm_col:
-
-
-        st.html(
-            """
-            <div class="sp-rm-label">
-                RM
-            </div>
-            """
-        )
-
-
-    with whole_col:
-
-
-        ringgit_text = (
-            st.text_input(
-
-                "Ringgit amount",
-
-                value="",
-
-                placeholder="0",
-
-                label_visibility=
-                    "collapsed",
-
-                key=
-                    "cost_ringgit"
-            )
-        )
-
-
-    with dot_col:
-
-
-        st.html(
-            """
-            <div class="sp-currency-dot">
-                .
-            </div>
-            """
-        )
-
-
-    with sen_col:
-
-
-        sen_text = (
-            st.text_input(
-
-                "Sen amount",
-
-                value="00",
-
-                max_chars=2,
-
-                label_visibility=
-                    "collapsed",
-
-                key=
-                    "cost_sen"
-            )
-        )
-
-
-    st.html(
-        """
-        <div class="sp-currency-help">
-
-            The decimal point remains fixed.
-            Enter Ringgit on the left and
-            up to two sen digits on the right.
-
-        </div>
-        """
-    )
-
-
-    return (
-        ringgit_text,
-        sen_text
-    )
-
-
-# ============================================================
-# CURRENCY VALIDATION
-# ============================================================
-
-def parse_currency(
-    ringgit_text,
-    sen_text
-):
-
-    ringgit = (
-        str(
-            ringgit_text
-        )
-        .replace(
-            ",",
-            ""
-        )
-        .strip()
-    )
-
-
-    sen = (
-        str(
-            sen_text
-        )
-        .strip()
-    )
-
-
-    # Empty Ringgit = 0
-
-    if ringgit == "":
-
-        ringgit = "0"
-
-
-    # Empty sen = 00
-
-    if sen == "":
-
-        sen = "00"
-
-
-    # Ringgit must contain digits only
-
-    if not (
-        ringgit.isdigit()
-    ):
-
-
-        return (
-            None,
-            (
-                "Ringgit amount must "
-                "contain numbers only."
-            )
-        )
-
-
-    # Sen must contain digits only
-
-    if not (
-        sen.isdigit()
-    ):
-
-
-        return (
-            None,
-            (
-                "Sen amount must "
-                "contain numbers only."
-            )
-        )
-
-
-    # Max 2 sen digits
-
-    if len(
-        sen
-    ) > 2:
-
-
-        return (
-            None,
-            (
-                "Sen can contain "
-                "a maximum of 2 digits."
-            )
-        )
-
-
-    # 5 = 05 sen
-
-    sen = (
-        sen.zfill(
-            2
-        )
-    )
-
-
-    value = (
-
-        int(
-            ringgit
-        )
-
-        +
-
-        (
-            int(
-                sen
-            )
-            /
-            100
-        )
-    )
-
-
-    if value <= 0:
-
-
-        return (
-            None,
-            (
-                "Total cost must be "
-                "greater than RM 0.00."
-            )
-        )
-
-
-    return (
-        round(
-            value,
-            2
-        ),
-        None
-    )
-
-
-# ============================================================
-# OLLAMA
+# OLLAMA CONFIG
 # ============================================================
 
 def ollama_configured():
@@ -2157,7 +2419,7 @@ def get_ollama_model():
 
 
 # ============================================================
-# AI SYSTEM BEHAVIOUR
+# SMARTPANTRY AI BEHAVIOUR
 # ============================================================
 
 SMARTPANTRY_AI_SYSTEM = """
@@ -2165,33 +2427,29 @@ You are SmartPantry's Autonomous Meal Planning Engine.
 
 You are not a general chatbot.
 
-You operate only inside SmartPantry.
-
 SmartPantry itself determines:
 
 - expiry dates
 - days remaining
 - lifecycle status
 - food cost
-- storage location
+- storage
 - whether food is Available, Consumed, Wasted or Expired
 
-Treat supplied tracking values as authoritative.
-
-YOUR RESPONSIBILITY
+Treat these supplied values as authoritative.
 
 You completely control meal planning.
 
 For the current pantry situation determine:
 
 1. pantry urgency;
-2. foods to prioritise;
-3. 1 to 4 appropriate meals;
+2. food priorities;
+3. between 1 and 4 meals;
 4. meal order;
 5. pantry ingredient allocation;
-6. additional ingredients actually required;
-7. short practical preparation instructions;
-8. the most useful next action.
+6. necessary missing ingredients;
+7. practical preparation steps;
+8. the next most useful action.
 
 PRIORITY
 
@@ -2207,42 +2465,34 @@ Priority 3:
 Priority 4:
 Long-life food.
 
-Your goal is to reduce avoidable household food waste.
-
-RULES
-
 Never recommend:
 
 - Consumed items
 - Wasted items
 - Expired items
 
-Never invent a pantry ingredient.
+Never invent pantry ingredients.
 
-Ingredients not present must be listed under
-missing_ingredients.
+Items not in the pantry must be listed
+as missing ingredients.
 
 Minimise unnecessary purchases.
 
-Use practical everyday meals.
+Use realistic household meals.
 
-Do not give dieting, weight-loss,
+Do not provide dieting, weight-loss,
 calorie-restriction or body-weight advice.
 
 FOOD SAFETY
 
 Expiry information alone does not prove food is safe.
 
-For perishable food remind users to check
-normal freshness, appearance, smell and storage condition.
-
-Never recommend food SmartPantry marks as expired.
+For perishable foods remind the user to check
+appearance, smell, freshness and storage condition.
 
 OUTPUT
 
-Return ONLY valid JSON.
-
-No markdown fences.
+Return ONLY valid JSON:
 
 {
   "situation_title": "short title",
@@ -2266,7 +2516,7 @@ No markdown fences.
 
 
 # ============================================================
-# AI CONTEXT
+# AI PANTRY CONTEXT
 # ============================================================
 
 def ai_pantry_context():
@@ -2281,36 +2531,38 @@ def ai_pantry_context():
         return []
 
 
-    usable = df[
-        (
-            df[
-                "Item Status"
-            ]
-            ==
-            "Available"
+    usable = (
+        df[
+            (
+                df[
+                    "Item Status"
+                ]
+                ==
+                "Available"
+            )
+            &
+            (
+                df[
+                    "Days Left"
+                ]
+                >=
+                0
+            )
+        ]
+        .sort_values(
+            "Days Left"
         )
-        &
-        (
-            df[
-                "Days Left"
-            ]
-            >=
-            0
-        )
-    ].sort_values(
-        "Days Left"
     )
 
 
-    result = []
+    context = []
 
 
     for _, row in (
         usable.iterrows()
     ):
 
-
-        result.append(
+        context.append(
             {
                 "food":
                     row[
@@ -2362,11 +2614,11 @@ def ai_pantry_context():
         )
 
 
-    return result
+    return context
 
 
 # ============================================================
-# OLLAMA API CALL
+# OLLAMA API
 # ============================================================
 
 def call_ollama_cloud(
@@ -2377,72 +2629,66 @@ def call_ollama_cloud(
         ollama_configured()
     ):
 
-
         return (
             None,
-            (
-                "Ollama Cloud is not configured."
-            )
+            "Ollama Cloud is not configured."
         )
 
 
     try:
 
+        response = (
+            requests.post(
 
-        response = requests.post(
+                "https://ollama.com/api/chat",
 
-            "https://ollama.com/api/chat",
+                headers={
+                    "Authorization":
+                        (
+                            "Bearer "
+                            +
+                            st.secrets[
+                                "OLLAMA_API_KEY"
+                            ]
+                        ),
 
-            headers={
+                    "Content-Type":
+                        "application/json"
+                },
 
-                "Authorization":
-                    (
-                        "Bearer "
-                        +
-                        st.secrets[
-                            "OLLAMA_API_KEY"
-                        ]
-                    ),
+                json={
+                    "model":
+                        get_ollama_model(),
 
-                "Content-Type":
-                    "application/json"
-            },
+                    "messages": [
+                        {
+                            "role":
+                                "system",
 
-            json={
+                            "content":
+                                SMARTPANTRY_AI_SYSTEM
+                        },
 
-                "model":
-                    get_ollama_model(),
+                        {
+                            "role":
+                                "user",
 
-                "messages": [
+                            "content":
+                                prompt
+                        }
+                    ],
 
-                    {
-                        "role":
-                            "system",
+                    "stream":
+                        False,
 
-                        "content":
-                            SMARTPANTRY_AI_SYSTEM
-                    },
-
-                    {
-                        "role":
-                            "user",
-
-                        "content":
-                            prompt
+                    "options": {
+                        "temperature":
+                            0.2
                     }
-                ],
+                },
 
-                "stream":
-                    False,
-
-                "options": {
-
-                    "temperature":
-                        0.2
-                }
-            },
-
-            timeout=90
+                timeout=90
+            )
         )
 
 
@@ -2464,17 +2710,32 @@ def call_ollama_cloud(
         )
 
 
-    except Exception as error:
-
+    except requests.exceptions.Timeout:
 
         return (
             None,
-            f"AI request failed: {error}"
+            "Ollama Cloud timed out."
+        )
+
+
+    except requests.exceptions.RequestException as error:
+
+        return (
+            None,
+            f"Ollama request failed: {error}"
+        )
+
+
+    except Exception as error:
+
+        return (
+            None,
+            f"Unable to read AI response: {error}"
         )
 
 
 # ============================================================
-# AI JSON PARSER
+# AI JSON
 # ============================================================
 
 def parse_ai_json(
@@ -2508,10 +2769,8 @@ def parse_ai_json(
 
     try:
 
-        return (
-            json.loads(
-                cleaned
-            )
+        return json.loads(
+            cleaned
         )
 
     except Exception:
@@ -2536,34 +2795,25 @@ def parse_ai_json(
     if (
         start != -1
         and
-        end != -1
-        and
         end > start
     ):
 
-
         try:
 
-            return (
-                json.loads(
-                    cleaned[
-                        start:
-                        end + 1
-                    ]
-                )
+            return json.loads(
+                cleaned[
+                    start:
+                    end + 1
+                ]
             )
 
         except Exception:
 
-            return None
+            pass
 
 
     return None
 
-
-# ============================================================
-# VALIDATE AI PLAN
-# ============================================================
 
 def validate_ai_plan(
     plan
@@ -2593,13 +2843,12 @@ def validate_ai_plan(
         meals = []
 
 
-    cleaned = []
+    cleaned_meals = []
 
 
     for meal in (
         meals[:4]
     ):
-
 
         if not isinstance(
             meal,
@@ -2609,7 +2858,7 @@ def validate_ai_plan(
             continue
 
 
-        cleaned.append(
+        cleaned_meals.append(
             {
                 "meal_name":
                     str(
@@ -2671,7 +2920,6 @@ def validate_ai_plan(
 
 
     return {
-
         "situation_title":
             str(
                 plan.get(
@@ -2705,7 +2953,7 @@ def validate_ai_plan(
             ),
 
         "meals":
-            cleaned,
+            cleaned_meals,
 
         "next_action":
             str(
@@ -2724,7 +2972,6 @@ def validate_ai_plan(
 def planner_signature():
 
     payload = {
-
         "date":
             str(
                 date.today()
@@ -2746,7 +2993,7 @@ def planner_signature():
         "time":
             st.session_state[
                 "planner_time"
-            ]
+            ],
     }
 
 
@@ -2778,11 +3025,9 @@ def generate_ai_plan(
 
     if not pantry:
 
-
         st.session_state[
             "ai_meal_plan"
         ] = None
-
 
         return False
 
@@ -2801,7 +3046,6 @@ def generate_ai_plan(
         ==
         signature
     ):
-
 
         return False
 
@@ -2833,6 +3077,7 @@ Maximum preparation time:
 {st.session_state["planner_time"]}
 
 Create the best current SmartPantry meal strategy.
+
 Return only the required JSON.
 """
 
@@ -2847,22 +3092,16 @@ Return only the required JSON.
 
     if error:
 
-
         st.session_state[
             "ai_plan_error"
-        ] = (
-            error
-        )
-
+        ] = error
 
         return False
 
 
     st.session_state[
         "ai_plan_raw"
-    ] = (
-        result
-    )
+    ] = result
 
 
     plan = (
@@ -2876,23 +3115,19 @@ Return only the required JSON.
 
     if plan is None:
 
-
         st.session_state[
             "ai_plan_error"
         ] = (
-            "SmartPantry could not read "
-            "the AI response."
+            "SmartPantry could not "
+            "read the AI response."
         )
-
 
         return False
 
 
     st.session_state[
         "ai_meal_plan"
-    ] = (
-        plan
-    )
+    ] = plan
 
 
     st.session_state[
@@ -2924,7 +3159,7 @@ Return only the required JSON.
 
 
 # ============================================================
-# AUTOMATIC AI
+# AUTO AI
 # ============================================================
 
 def automatic_ai_update():
@@ -2938,16 +3173,12 @@ def automatic_ai_update():
         return
 
 
-    if not (
-        ollama_configured()
-    ):
+    if not ollama_configured():
 
         return
 
 
-    if not (
-        ai_pantry_context()
-    ):
+    if not ai_pantry_context():
 
         return
 
@@ -2971,7 +3202,6 @@ def automatic_ai_update():
         ]
     ):
 
-
         generate_ai_plan(
             (
                 "SmartPantry detected "
@@ -2992,7 +3222,6 @@ def load_demo_data():
 
 
     sample = [
-
         (
             "Fresh Milk",
             "Dairy",
@@ -3081,7 +3310,7 @@ def load_demo_data():
             20,
             4.50,
             "Pantry"
-        )
+        ),
     ]
 
 
@@ -3094,7 +3323,6 @@ def load_demo_data():
         cost,
         storage
     ) in sample:
-
 
         st.session_state[
             "pantry_items"
@@ -3141,7 +3369,7 @@ def load_demo_data():
                     "Available",
 
                 "status_date":
-                    ""
+                    "",
             }
         )
 
@@ -3179,8 +3407,8 @@ st.html(
             protect pantry value,
             reduce avoidable waste,
             and let an autonomous Ollama Cloud
-            planner adapt your meals
-            when circumstances change.
+            planner adapt your meals when
+            circumstances change.
 
         </div>
 
@@ -3194,7 +3422,6 @@ st.html(
 # ============================================================
 
 with st.sidebar:
-
 
     st.html(
         """
@@ -3243,7 +3470,6 @@ with st.sidebar:
         icon
     ) in NAV_ITEMS:
 
-
         active = (
             st.session_state[
                 "active_page"
@@ -3254,7 +3480,6 @@ with st.sidebar:
 
 
         if st.button(
-
             f"{icon}  {label}",
 
             key=
@@ -3271,12 +3496,9 @@ with st.sidebar:
                 )
         ):
 
-
             st.session_state[
                 "active_page"
-            ] = (
-                label
-            )
+            ] = label
 
 
             st.rerun()
@@ -3295,7 +3517,6 @@ with st.sidebar:
         border=True
     ):
 
-
         st.toggle(
             "🤖 Automatic Planning",
             key=
@@ -3309,25 +3530,19 @@ with st.sidebar:
             ]
         ):
 
-
             st.caption(
                 "Automatically adapts "
                 "when pantry conditions change."
             )
 
-
         else:
-
 
             st.caption(
                 "Automatic planning paused."
             )
 
 
-    if (
-        ollama_configured()
-    ):
-
+    if ollama_configured():
 
         st.html(
             f"""
@@ -3353,9 +3568,7 @@ with st.sidebar:
             """
         )
 
-
     else:
-
 
         st.html(
             """
@@ -3386,12 +3599,9 @@ with st.sidebar:
     )
 
 
-    if not (
-        sidebar_df.empty
-    ):
+    if not sidebar_df.empty:
 
-
-        active_food = (
+        sidebar_available = (
             sidebar_df[
                 sidebar_df[
                     "Item Status"
@@ -3402,10 +3612,10 @@ with st.sidebar:
         )
 
 
-        risk_food = (
-            active_food[
+        sidebar_risk = (
+            sidebar_available[
                 (
-                    active_food[
+                    sidebar_available[
                         "Days Left"
                     ]
                     >=
@@ -3413,7 +3623,7 @@ with st.sidebar:
                 )
                 &
                 (
-                    active_food[
+                    sidebar_available[
                         "Days Left"
                     ]
                     <=
@@ -3440,7 +3650,7 @@ with st.sidebar:
         s1.metric(
             "Items",
             len(
-                active_food
+                sidebar_available
             )
         )
 
@@ -3448,7 +3658,7 @@ with st.sidebar:
         s2.metric(
             "Risk",
             len(
-                risk_food
+                sidebar_risk
             )
         )
 
@@ -3459,7 +3669,6 @@ with st.sidebar:
         ]
     ):
 
-
         st.divider()
 
 
@@ -3467,7 +3676,6 @@ with st.sidebar:
             "🧪 Load Demo Pantry",
             use_container_width=True
         ):
-
 
             load_demo_data()
 
@@ -3518,7 +3726,6 @@ if (
     ]
 ):
 
-
     st.toast(
         st.session_state[
             "flash_message"
@@ -3532,7 +3739,7 @@ if (
 
 
 # ============================================================
-# AUTOMATIC AI
+# AUTO AI
 # ============================================================
 
 automatic_ai_update()
@@ -3544,14 +3751,13 @@ automatic_ai_update()
 
 if page == "Overview":
 
-
     page_header(
         "Pantry Command Centre",
         "Overview",
         (
             "See what needs attention, "
-            "what value is at risk, "
-            "and how SmartPantry is responding."
+            "what value is at risk, and "
+            "how SmartPantry is responding."
         )
     )
 
@@ -3563,14 +3769,11 @@ if page == "Overview":
 
     if df.empty:
 
-
         st.info(
             "Your pantry is empty."
         )
 
-
     else:
-
 
         available = df[
             df[
@@ -3655,21 +3858,23 @@ if page == "Overview":
 
         with health_col:
 
-
             st.markdown(
                 "### 🌿 Pantry Health"
             )
 
 
             st.progress(
-                health / 100
+                health
+                /
+                100
             )
 
 
             st.markdown(
                 f"## "
                 f"{health}/100 "
-                f"— {health_label}"
+                f"— "
+                f"{health_label}"
             )
 
 
@@ -3681,11 +3886,9 @@ if page == "Overview":
 
         with risk_col:
 
-
             with st.container(
                 border=True
             ):
-
 
                 st.markdown(
                     "#### ⚠️ Current Risk"
@@ -3708,13 +3911,12 @@ if page == "Overview":
         st.divider()
 
 
-        a, b, c, d = (
+        c1, c2, c3, c4 = (
             st.columns(4)
         )
 
 
-        with a:
-
+        with c1:
 
             metric_card(
                 "🥫",
@@ -3725,8 +3927,7 @@ if page == "Overview":
             )
 
 
-        with b:
-
+        with c2:
 
             metric_card(
                 "🚨",
@@ -3737,22 +3938,26 @@ if page == "Overview":
             )
 
 
-        with c:
-
+        with c3:
 
             metric_card(
                 "💼",
-                f"RM {pantry_value:.2f}",
+                (
+                    f"RM "
+                    f"{pantry_value:.2f}"
+                ),
                 "Pantry Value"
             )
 
 
-        with d:
-
+        with c4:
 
             metric_card(
                 "💚",
-                f"RM {saved_value:.2f}",
+                (
+                    f"RM "
+                    f"{saved_value:.2f}"
+                ),
                 "Value Saved"
             )
 
@@ -3765,72 +3970,79 @@ if page == "Overview":
         )
 
 
-        for _, row in (
-            attention
-            .head(5)
-            .iterrows()
-        ):
+        if attention.empty:
 
+            st.success(
+                "No food currently "
+                "needs urgent attention."
+            )
 
-            with st.container(
-                border=True
+        else:
+
+            for _, row in (
+                attention
+                .head(5)
+                .iterrows()
             ):
 
+                with st.container(
+                    border=True
+                ):
 
-                x, y, z = (
-                    st.columns(
-                        [
-                            3,
-                            2,
-                            1
-                        ]
-                    )
-                )
-
-
-                with x:
-
-
-                    st.markdown(
-                        f"#### "
-                        f"{row['Food']}"
-                    )
-
-
-                    status_badge(
-                        row[
-                            "Expiry Status"
-                        ]
-                    )
-
-
-                with y:
-
-
-                    st.write(
-                        expiry_message(
-                            row[
-                                "Days Left"
+                    a, b, c = (
+                        st.columns(
+                            [
+                                3,
+                                2,
+                                1
                             ]
                         )
                     )
 
 
-                    st.caption(
-                        f"{row['Quantity']} "
-                        f"{row['Unit']} "
-                        f"• {row['Storage']}"
-                    )
+                    with a:
+
+                        st.markdown(
+                            f"#### "
+                            f"{row['Food']}"
+                        )
 
 
-                with z:
+                        status_badge(
+                            row[
+                                "Expiry Status"
+                            ]
+                        )
 
 
-                    st.metric(
-                        "Value",
-                        f"RM "
-                        f"{row['Cost (RM)']:.2f}"
-                    )
+                    with b:
+
+                        st.write(
+                            expiry_message(
+                                row[
+                                    "Days Left"
+                                ]
+                            )
+                        )
+
+
+                        st.caption(
+                            f"{row['Quantity']} "
+                            f"{row['Unit']} "
+                            f"• "
+                            f"{row['Storage']}"
+                        )
+
+
+                    with c:
+
+                        st.metric(
+                            "Value",
+                            (
+                                f"RM "
+                                f"{row['Cost (RM)']:.2f}"
+                            )
+                        )
 
 
         st.divider()
@@ -3846,8 +4058,9 @@ if page == "Overview":
 
                 <div class="sp-ai-description">
 
-                    The planner automatically adapts
-                    when pantry conditions change.
+                    SmartPantry automatically
+                    adapts the AI meal strategy
+                    whenever your pantry changes.
 
                 </div>
 
@@ -3864,7 +4077,6 @@ if page == "Overview":
 
 
         if plan:
-
 
             st.markdown(
                 "### "
@@ -3900,7 +4112,6 @@ if page == "Overview":
                 )
             ):
 
-
                 st.info(
                     "🎯 "
                     +
@@ -3916,7 +4127,6 @@ if page == "Overview":
             ]
         ):
 
-
             st.warning(
                 st.session_state[
                     "ai_plan_error"
@@ -3930,13 +4140,12 @@ if page == "Overview":
 
 elif page == "Food Tracker":
 
-
     page_header(
         "Lifecycle Management",
         "Food Tracker",
         (
-            "Monitor each food item "
-            "through its pantry lifecycle."
+            "Monitor every pantry item "
+            "through its lifecycle."
         )
     )
 
@@ -3948,14 +4157,11 @@ elif page == "Food Tracker":
 
     if df.empty:
 
-
         st.info(
             "No food items tracked."
         )
 
-
     else:
-
 
         f1, f2, f3 = (
             st.columns(3)
@@ -4007,7 +4213,6 @@ elif page == "Food Tracker":
 
         if search:
 
-
             filtered = filtered[
                 filtered[
                     "Food"
@@ -4026,7 +4231,6 @@ elif page == "Food Tracker":
             "All"
         ):
 
-
             filtered = filtered[
                 filtered[
                     "Category"
@@ -4041,7 +4245,6 @@ elif page == "Food Tracker":
             !=
             "All"
         ):
-
 
             filtered = filtered[
                 filtered[
@@ -4062,7 +4265,6 @@ elif page == "Food Tracker":
         for _, row in (
             filtered.iterrows()
         ):
-
 
             source_item = next(
 
@@ -4089,7 +4291,6 @@ elif page == "Food Tracker":
                 border=True
             ):
 
-
                 main_col, qty_col = (
                     st.columns(
                         [
@@ -4101,7 +4302,6 @@ elif page == "Food Tracker":
 
 
                 with main_col:
-
 
                     st.markdown(
                         f"### "
@@ -4117,16 +4317,13 @@ elif page == "Food Tracker":
                         "Available"
                     ):
 
-
                         status_badge(
                             row[
                                 "Expiry Status"
                             ]
                         )
 
-
                     else:
-
 
                         st.write(
                             "**Lifecycle:** "
@@ -4139,19 +4336,22 @@ elif page == "Food Tracker":
 
                     st.caption(
                         f"{row['Category']} "
-                        f"• {row['Storage']} "
-                        f"• RM "
+                        f"• "
+                        f"{row['Storage']} "
+                        f"• "
+                        f"RM "
                         f"{row['Cost (RM)']:.2f}"
                     )
 
 
                 with qty_col:
 
-
                     st.metric(
                         "Quantity",
-                        f"{row['Quantity']} "
-                        f"{row['Unit']}"
+                        (
+                            f"{row['Quantity']} "
+                            f"{row['Unit']}"
+                        )
                     )
 
 
@@ -4162,7 +4362,6 @@ elif page == "Food Tracker":
                     ==
                     "Available"
                 ):
-
 
                     progress = (
                         shelf_progress(
@@ -4192,15 +4391,16 @@ elif page == "Food Tracker":
 
                     if b1.button(
                         "✅ Consumed",
+
                         key=
                             "consume_"
                             +
                             row[
                                 "ID"
                             ],
+
                         use_container_width=True
                     ):
-
 
                         mark_item(
                             row[
@@ -4220,15 +4420,16 @@ elif page == "Food Tracker":
 
                     if b2.button(
                         "🗑️ Wasted",
+
                         key=
                             "waste_"
                             +
                             row[
                                 "ID"
                             ],
+
                         use_container_width=True
                     ):
-
 
                         mark_item(
                             row[
@@ -4248,15 +4449,16 @@ elif page == "Food Tracker":
 
                     if b3.button(
                         "❌ Remove",
+
                         key=
                             "remove_"
                             +
                             row[
                                 "ID"
                             ],
+
                         use_container_width=True
                     ):
-
 
                         delete_item(
                             row[
@@ -4279,13 +4481,12 @@ elif page == "Food Tracker":
 
 elif page == "Add Item":
 
-
     page_header(
         "Inventory Entry",
         "Add Food",
         (
-            "Add a pantry item and "
-            "start lifecycle tracking."
+            "Add a food item and "
+            "start SmartPantry tracking."
         )
     )
 
@@ -4294,224 +4495,230 @@ elif page == "Add Item":
         border=True
     ):
 
+        left, right = (
+            st.columns(2)
+        )
 
-        with st.form(
-            "add_food",
-            clear_on_submit=True
+
+        with left:
+
+            food_name = (
+                st.text_input(
+                    "Food Name *",
+                    placeholder=
+                        "Example: Fresh Milk",
+                    key=
+                        "add_food_name"
+                )
+            )
+
+
+            category = (
+                st.selectbox(
+                    "Category",
+                    CATEGORIES,
+                    key=
+                        "add_category"
+                )
+            )
+
+
+            quantity = (
+                st.number_input(
+                    "Quantity",
+                    min_value=1,
+                    value=1,
+                    step=1,
+                    key=
+                        "add_quantity"
+                )
+            )
+
+
+            unit = (
+                st.selectbox(
+                    "Unit",
+                    UNITS,
+                    key=
+                        "add_unit"
+                )
+            )
+
+
+        with right:
+
+            purchase_date = (
+                st.date_input(
+                    "Purchase Date",
+                    value=
+                        date.today(),
+                    key=
+                        "add_purchase"
+                )
+            )
+
+
+            expiry_date = (
+                st.date_input(
+                    "Expiry Date",
+                    value=
+                        (
+                            date.today()
+                            +
+                            timedelta(
+                                days=7
+                            )
+                        ),
+                    key=
+                        "add_expiry"
+                )
+            )
+
+
+            # =================================================
+            # SINGLE TNG-STYLE FIELD
+            # =================================================
+
+            cost = (
+                tng_money_input(
+                    key=
+                        "add_cost_component"
+                )
+            )
+
+
+            storage = (
+                st.selectbox(
+                    "Storage",
+                    STORAGE_LOCATIONS,
+                    key=
+                        "add_storage"
+                )
+            )
+
+
+        st.caption(
+            f"Current entered cost: "
+            f"**RM {cost:,.2f}**"
+        )
+
+
+        if st.button(
+            "➕ Add to SmartPantry",
+            type="primary",
+            use_container_width=True
         ):
 
+            if not (
+                food_name.strip()
+            ):
 
-            left, right = (
-                st.columns(2)
-            )
-
-
-            with left:
-
-
-                food_name = (
-                    st.text_input(
-                        "Food Name *",
-                        placeholder=
-                            "Example: Fresh Milk"
-                    )
+                st.error(
+                    "Please enter "
+                    "a food name."
                 )
 
 
-                category = (
-                    st.selectbox(
-                        "Category",
-                        CATEGORIES
-                    )
+            elif (
+                expiry_date
+                <
+                purchase_date
+            ):
+
+                st.error(
+                    "Expiry date cannot "
+                    "be before purchase date."
                 )
 
 
-                quantity = (
-                    st.number_input(
-                        "Quantity",
-                        min_value=1,
-                        value=1,
-                        step=1
-                    )
+            elif cost <= 0:
+
+                st.error(
+                    "Total cost must be "
+                    "greater than RM 0.00."
                 )
 
 
-                unit = (
-                    st.selectbox(
-                        "Unit",
-                        UNITS
-                    )
+            else:
+
+                st.session_state[
+                    "pantry_items"
+                ].append(
+                    {
+                        "id":
+                            str(
+                                uuid.uuid4()
+                            ),
+
+                        "item_name":
+                            food_name.strip(),
+
+                        "category":
+                            category,
+
+                        "quantity":
+                            int(
+                                quantity
+                            ),
+
+                        "unit":
+                            unit,
+
+                        "purchase_date":
+                            str(
+                                purchase_date
+                            ),
+
+                        "expiry_date":
+                            str(
+                                expiry_date
+                            ),
+
+                        "cost":
+                            float(
+                                cost
+                            ),
+
+                        "storage":
+                            storage,
+
+                        "item_status":
+                            "Available",
+
+                        "status_date":
+                            "",
+                    }
                 )
 
 
-            with right:
-
-
-                purchase_date = (
-                    st.date_input(
-                        "Purchase Date",
-                        value=
-                            date.today()
-                    )
+                add_activity(
+                    f"➕ "
+                    f"{food_name.strip()} "
+                    f"was added."
                 )
 
 
-                expiry_date = (
-                    st.date_input(
-                        "Expiry Date",
-                        value=
-                            (
-                                date.today()
-                                +
-                                timedelta(
-                                    days=7
-                                )
-                            )
-                    )
+                st.session_state[
+                    "ai_attempt_signature"
+                ] = ""
+
+
+                st.session_state[
+                    "flash_message"
+                ] = (
+                    f"{food_name.strip()} "
+                    f"added successfully."
                 )
 
 
-                (
-                    ringgit_text,
-                    sen_text
-                ) = currency_input()
-
-
-                storage = (
-                    st.selectbox(
-                        "Storage",
-                        STORAGE_LOCATIONS
-                    )
+                st.session_state[
+                    "active_page"
+                ] = (
+                    "Food Tracker"
                 )
 
 
-            submitted = (
-                st.form_submit_button(
-                    "➕ Add to SmartPantry",
-                    use_container_width=True,
-                    type="primary"
-                )
-            )
-
-
-            if submitted:
-
-
-                (
-                    cost,
-                    cost_error
-                ) = parse_currency(
-                    ringgit_text,
-                    sen_text
-                )
-
-
-                if not (
-                    food_name.strip()
-                ):
-
-
-                    st.error(
-                        "Please enter "
-                        "a food name."
-                    )
-
-
-                elif (
-                    expiry_date
-                    <
-                    purchase_date
-                ):
-
-
-                    st.error(
-                        "Expiry date cannot "
-                        "be before purchase date."
-                    )
-
-
-                elif (
-                    cost_error
-                ):
-
-
-                    st.error(
-                        cost_error
-                    )
-
-
-                else:
-
-
-                    st.session_state[
-                        "pantry_items"
-                    ].append(
-                        {
-                            "id":
-                                str(
-                                    uuid.uuid4()
-                                ),
-
-                            "item_name":
-                                food_name.strip(),
-
-                            "category":
-                                category,
-
-                            "quantity":
-                                int(
-                                    quantity
-                                ),
-
-                            "unit":
-                                unit,
-
-                            "purchase_date":
-                                str(
-                                    purchase_date
-                                ),
-
-                            "expiry_date":
-                                str(
-                                    expiry_date
-                                ),
-
-                            "cost":
-                                cost,
-
-                            "storage":
-                                storage,
-
-                            "item_status":
-                                "Available",
-
-                            "status_date":
-                                ""
-                        }
-                    )
-
-
-                    add_activity(
-                        f"➕ "
-                        f"{food_name.strip()} "
-                        f"was added."
-                    )
-
-
-                    st.session_state[
-                        "ai_attempt_signature"
-                    ] = ""
-
-
-                    st.session_state[
-                        "flash_message"
-                    ] = (
-                        f"{food_name.strip()} "
-                        f"added successfully."
-                    )
-
-
-                    st.rerun()
+                st.rerun()
 
 
 # ============================================================
@@ -4520,13 +4727,12 @@ elif page == "Add Item":
 
 elif page == "Expiry Timeline":
 
-
     page_header(
         "Time-Based Tracking",
         "Expiry Timeline",
         (
-            "See food grouped by "
-            "expiry urgency."
+            "See foods organised "
+            "by expiry urgency."
         )
     )
 
@@ -4538,14 +4744,11 @@ elif page == "Expiry Timeline":
 
     if df.empty:
 
-
         st.info(
             "No tracked food."
         )
 
-
     else:
-
 
         available = (
             df[
@@ -4562,9 +4765,9 @@ elif page == "Expiry Timeline":
 
 
         groups = [
-
             (
                 "⚫ Expired",
+
                 available[
                     available[
                         "Days Left"
@@ -4576,6 +4779,7 @@ elif page == "Expiry Timeline":
 
             (
                 "🔴 Today",
+
                 available[
                     available[
                         "Days Left"
@@ -4587,6 +4791,7 @@ elif page == "Expiry Timeline":
 
             (
                 "🟠 Tomorrow",
+
                 available[
                     available[
                         "Days Left"
@@ -4598,6 +4803,7 @@ elif page == "Expiry Timeline":
 
             (
                 "🟡 Next 7 Days",
+
                 available[
                     (
                         available[
@@ -4619,6 +4825,7 @@ elif page == "Expiry Timeline":
 
             (
                 "🟢 Later",
+
                 available[
                     available[
                         "Days Left"
@@ -4626,7 +4833,7 @@ elif page == "Expiry Timeline":
                     >
                     7
                 ]
-            )
+            ),
         ]
 
 
@@ -4635,33 +4842,26 @@ elif page == "Expiry Timeline":
             group
         ) in groups:
 
-
             st.markdown(
-                f"### "
-                f"{title}"
+                f"### {title}"
             )
 
 
             if group.empty:
 
-
                 st.caption(
                     "No items."
                 )
 
-
             else:
-
 
                 for _, row in (
                     group.iterrows()
                 ):
 
-
                     with st.container(
                         border=True
                     ):
-
 
                         c1, c2, c3 = (
                             st.columns(
@@ -4709,13 +4909,12 @@ elif page == "Expiry Timeline":
 
 elif page == "AI Meal Planner":
 
-
     page_header(
         "Ollama Cloud",
         "Autonomous Meal Planner",
         (
-            "The AI controls the "
-            "current meal strategy."
+            "The AI controls the current "
+            "meal strategy based on your pantry."
         )
     )
 
@@ -4731,7 +4930,8 @@ elif page == "AI Meal Planner":
             <div class="sp-ai-description">
 
                 Meal selection automatically
-                adapts to your current pantry.
+                adapts to your current pantry,
+                expiry risk and planner preferences.
 
             </div>
 
@@ -4744,109 +4944,113 @@ elif page == "AI Meal Planner":
         "⚙️ Planner Preferences"
     ):
 
+        preference = (
+            st.text_input(
+                "Meal Preference",
 
-        with st.form(
-            "planner_settings"
+                value=
+                    st.session_state[
+                        "planner_preference"
+                    ],
+
+                key=
+                    "planner_pref_widget"
+            )
+        )
+
+
+        servings = (
+            st.number_input(
+                "Servings",
+                min_value=1,
+                max_value=8,
+
+                value=
+                    st.session_state[
+                        "planner_servings"
+                    ],
+
+                key=
+                    "planner_servings_widget"
+            )
+        )
+
+
+        time_options = [
+            "15 minutes",
+            "30 minutes",
+            "45 minutes",
+            "60 minutes",
+        ]
+
+
+        current_time = (
+            st.session_state[
+                "planner_time"
+            ]
+        )
+
+
+        selected_time = (
+            st.selectbox(
+                "Maximum Preparation Time",
+
+                time_options,
+
+                index=
+                    (
+                        time_options.index(
+                            current_time
+                        )
+
+                        if (
+                            current_time
+                            in
+                            time_options
+                        )
+
+                        else 1
+                    ),
+
+                key=
+                    "planner_time_widget"
+            )
+        )
+
+
+        if st.button(
+            "Save & Recalculate",
+            type="primary",
+            use_container_width=True
         ):
 
-
-            preference = (
-                st.text_input(
-                    "Meal Preference",
-                    value=
-                        st.session_state[
-                            "planner_preference"
-                        ]
-                )
+            st.session_state[
+                "planner_preference"
+            ] = (
+                preference.strip()
+                or
+                "Practical everyday meals"
             )
 
 
-            servings = (
-                st.number_input(
-                    "Servings",
-                    min_value=1,
-                    max_value=8,
-                    value=
-                        st.session_state[
-                            "planner_servings"
-                        ]
-                )
+            st.session_state[
+                "planner_servings"
+            ] = int(
+                servings
             )
 
 
-            time_options = [
-
-                "15 minutes",
-                "30 minutes",
-                "45 minutes",
-                "60 minutes"
-            ]
+            st.session_state[
+                "planner_time"
+            ] = selected_time
 
 
-            current_time = (
-                st.session_state[
-                    "planner_time"
-                ]
-            )
+            st.session_state[
+                "ai_attempt_signature"
+            ] = ""
 
 
-            selected_time = (
-                st.selectbox(
-                    "Maximum Preparation Time",
-                    time_options,
-                    index=
-                        (
-                            time_options.index(
-                                current_time
-                            )
-
-                            if current_time
-                            in time_options
-
-                            else 1
-                        )
-                )
-            )
-
-
-            if st.form_submit_button(
-                "Save & Recalculate",
-                use_container_width=True,
-                type="primary"
-            ):
-
-
-                st.session_state[
-                    "planner_preference"
-                ] = (
-                    preference.strip()
-
-                    or
-
-                    "Practical everyday meals"
-                )
-
-
-                st.session_state[
-                    "planner_servings"
-                ] = int(
-                    servings
-                )
-
-
-                st.session_state[
-                    "planner_time"
-                ] = (
-                    selected_time
-                )
-
-
-                st.session_state[
-                    "ai_attempt_signature"
-                ] = ""
-
-
-                st.rerun()
+            st.rerun()
 
 
     pantry = (
@@ -4856,38 +5060,86 @@ elif page == "AI Meal Planner":
 
     if not pantry:
 
-
         st.warning(
             "No usable non-expired "
             "food is available."
         )
 
-
     else:
 
+        r1, r2 = (
+            st.columns(
+                [
+                    1,
+                    2
+                ]
+            )
+        )
 
-        if st.button(
-            "🔄 Re-plan Now",
-            type="primary"
-        ):
 
+        with r1:
 
-            with st.spinner(
-                "Ollama Cloud is "
-                "analysing the pantry..."
+            if st.button(
+                "🔄 Re-plan Now",
+                type="primary",
+                use_container_width=True
             ):
 
+                with st.spinner(
+                    "Ollama Cloud is "
+                    "analysing the pantry..."
+                ):
 
-                generate_ai_plan(
-                    (
-                        "User requested "
-                        "a fresh plan."
-                    ),
-                    force=True
+                    generate_ai_plan(
+                        (
+                            "The user requested "
+                            "a fresh plan."
+                        ),
+                        force=True
+                    )
+
+
+                st.rerun()
+
+
+        with r2:
+
+            if (
+                st.session_state[
+                    "ai_last_updated"
+                ]
+            ):
+
+                st.info(
+                    "Last AI adaptation: "
+                    +
+                    st.session_state[
+                        "ai_last_updated"
+                    ].strftime(
+                        "%d %b %Y • %H:%M"
+                    )
+                )
+
+            else:
+
+                st.info(
+                    f"{len(pantry)} "
+                    f"usable item(s) "
+                    f"available for planning."
                 )
 
 
-            st.rerun()
+        if (
+            st.session_state[
+                "ai_plan_error"
+            ]
+        ):
+
+            st.warning(
+                st.session_state[
+                    "ai_plan_error"
+                ]
+            )
 
 
         plan = (
@@ -4897,22 +5149,7 @@ elif page == "AI Meal Planner":
         )
 
 
-        if (
-            st.session_state[
-                "ai_plan_error"
-            ]
-        ):
-
-
-            st.warning(
-                st.session_state[
-                    "ai_plan_error"
-                ]
-            )
-
-
         if plan:
-
 
             st.divider()
 
@@ -4950,7 +5187,6 @@ elif page == "AI Meal Planner":
                 )
             ):
 
-
                 st.info(
                     "🎯 "
                     +
@@ -4968,6 +5204,13 @@ elif page == "AI Meal Planner":
             )
 
 
+            st.markdown(
+                f"### 🍽️ "
+                f"{len(meals)} "
+                f"AI-Selected Meal(s)"
+            )
+
+
             for (
                 number,
                 meal
@@ -4976,26 +5219,50 @@ elif page == "AI Meal Planner":
                 start=1
             ):
 
-
                 with st.container(
                     border=True
                 ):
 
-
-                    st.markdown(
-                        f"### "
-                        f"{number}. "
-                        f"{meal.get('meal_name', 'Meal')}"
+                    title_col, priority_col = (
+                        st.columns(
+                            [
+                                4,
+                                1
+                            ]
+                        )
                     )
 
 
-                    st.write(
-                        "**Priority:** "
-                        +
-                        meal.get(
-                            "priority",
-                            "Flexible"
+                    with title_col:
+
+                        st.markdown(
+                            f"### "
+                            f"{number}. "
+                            f"{meal.get('meal_name', 'Meal')}"
                         )
+
+
+                    with priority_col:
+
+                        st.caption(
+                            "PRIORITY"
+                        )
+
+
+                        st.write(
+                            "**"
+                            +
+                            meal.get(
+                                "priority",
+                                "Flexible"
+                            )
+                            +
+                            "**"
+                        )
+
+
+                    st.write(
+                        "**Why now**"
                     )
 
 
@@ -5014,31 +5281,41 @@ elif page == "AI Meal Planner":
 
                     with i1:
 
-
                         st.markdown(
                             "#### 🥕 Pantry Items"
                         )
 
 
-                        for ingredient in (
+                        pantry_items = (
                             meal.get(
                                 "pantry_ingredients",
                                 []
                             )
-                        ):
+                        )
 
 
-                            st.write(
-                                "✓ "
-                                +
-                                str(
-                                    ingredient
+                        if pantry_items:
+
+                            for ingredient in (
+                                pantry_items
+                            ):
+
+                                st.write(
+                                    "✓ "
+                                    +
+                                    str(
+                                        ingredient
+                                    )
                                 )
+
+                        else:
+
+                            st.caption(
+                                "No pantry items listed."
                             )
 
 
                     with i2:
-
 
                         st.markdown(
                             "#### 🛒 Missing / Optional"
@@ -5055,11 +5332,9 @@ elif page == "AI Meal Planner":
 
                         if missing:
 
-
                             for ingredient in (
                                 missing
                             ):
-
 
                                 st.write(
                                     "• "
@@ -5069,9 +5344,7 @@ elif page == "AI Meal Planner":
                                     )
                                 )
 
-
                         else:
-
 
                             st.success(
                                 "Nothing extra needed."
@@ -5088,24 +5361,39 @@ elif page == "AI Meal Planner":
 
                     if preparation:
 
-
                         with st.expander(
                             "👨‍🍳 Preparation"
                         ):
 
-
-                            for i, step in (
-                                enumerate(
-                                    preparation,
-                                    start=1
-                                )
+                            for (
+                                index,
+                                step
+                            ) in enumerate(
+                                preparation,
+                                start=1
                             ):
 
-
                                 st.write(
-                                    f"{i}. "
+                                    f"{index}. "
                                     f"{step}"
                                 )
+
+
+                    note = (
+                        meal.get(
+                            "food_safety_note",
+                            ""
+                        )
+                    )
+
+
+                    if note:
+
+                        st.caption(
+                            "Food safety: "
+                            +
+                            note
+                        )
 
 
             st.success(
@@ -5124,7 +5412,6 @@ elif page == "AI Meal Planner":
 
 elif page == "Insights":
 
-
     page_header(
         "Performance Analytics",
         "Insights",
@@ -5142,14 +5429,11 @@ elif page == "Insights":
 
     if df.empty:
 
-
         st.info(
             "Add pantry data first."
         )
 
-
     else:
-
 
         consumed = df[
             df[
@@ -5179,13 +5463,10 @@ elif page == "Insights":
 
 
         completed = (
-
             len(
                 consumed
             )
-
             +
-
             len(
                 wasted
             )
@@ -5193,7 +5474,6 @@ elif page == "Insights":
 
 
         avoidance = (
-
             len(
                 consumed
             )
@@ -5222,13 +5502,12 @@ elif page == "Insights":
         )
 
 
-        x1, x2, x3, x4 = (
+        c1, c2, c3, c4 = (
             st.columns(4)
         )
 
 
-        with x1:
-
+        with c1:
 
             metric_card(
                 "🌱",
@@ -5239,55 +5518,65 @@ elif page == "Insights":
             )
 
 
-        with x2:
-
+        with c2:
 
             metric_card(
                 "💚",
-                f"RM {saved_value:.2f}",
+                (
+                    f"RM "
+                    f"{saved_value:.2f}"
+                ),
                 "Value Saved"
             )
 
 
-        with x3:
-
+        with c3:
 
             metric_card(
                 "🗑️",
-                f"RM {waste_cost:.2f}",
+                (
+                    f"RM "
+                    f"{waste_cost:.2f}"
+                ),
                 "Waste Cost"
             )
 
 
-        with x4:
-
+        with c4:
 
             metric_card(
                 "📈",
-                f"{avoidance:.1f}%",
+                (
+                    f"{avoidance:.1f}%"
+                ),
                 "Waste Avoidance"
             )
 
 
-        if completed:
+        st.divider()
 
+
+        if completed:
 
             outcome_df = (
                 pd.DataFrame(
                     {
-                        "Outcome": [
-                            "Consumed",
-                            "Wasted"
-                        ],
+                        "Outcome":
+                            [
+                                "Consumed",
+                                "Wasted"
+                            ],
 
-                        "Items": [
-                            len(
-                                consumed
-                            ),
-                            len(
-                                wasted
-                            )
-                        ]
+                        "Items":
+                            [
+                                len(
+                                    consumed
+                                ),
+
+                                len(
+                                    wasted
+                                )
+                            ]
                     }
                 )
             )
@@ -5312,13 +5601,9 @@ elif page == "Insights":
             )
 
 
-        if not (
-            available.empty
-        ):
-
+        if not available.empty:
 
             category_df = (
-
                 available
                 .groupby(
                     "Category"
@@ -5356,7 +5641,7 @@ elif page == "Insights":
         )
 
 
-        backup = (
+        backup_df = (
             pd.DataFrame(
                 st.session_state[
                     "pantry_items"
@@ -5366,7 +5651,7 @@ elif page == "Insights":
 
 
         csv = (
-            backup
+            backup_df
             .to_csv(
                 index=False
             )
@@ -5381,7 +5666,8 @@ elif page == "Insights":
             data=csv,
             file_name=
                 "smartpantry_backup.csv",
-            mime="text/csv"
+            mime=
+                "text/csv"
         )
 
 
@@ -5400,9 +5686,7 @@ elif page == "Insights":
             is not None
         ):
 
-
             try:
-
 
                 restored = (
                     pd.read_csv(
@@ -5411,14 +5695,37 @@ elif page == "Insights":
                 )
 
 
-                if st.button(
+                required = {
+                    "id",
+                    "item_name",
+                    "category",
+                    "quantity",
+                    "unit",
+                    "purchase_date",
+                    "expiry_date",
+                    "cost",
+                    "storage",
+                    "item_status",
+                }
+
+
+                if not (
+                    required.issubset(
+                        restored.columns
+                    )
+                ):
+
+                    st.error(
+                        "This is not a valid "
+                        "SmartPantry backup."
+                    )
+
+                elif st.button(
                     "♻️ Restore Pantry",
                     type="primary"
                 ):
 
-
                     records = (
-
                         restored
                         .fillna("")
                         .to_dict(
@@ -5430,7 +5737,6 @@ elif page == "Insights":
                     for record in (
                         records
                     ):
-
 
                         record[
                             "quantity"
@@ -5458,9 +5764,7 @@ elif page == "Insights":
 
                     st.session_state[
                         "pantry_items"
-                    ] = (
-                        records
-                    )
+                    ] = records
 
 
                     st.session_state[
@@ -5473,13 +5777,19 @@ elif page == "Insights":
                     ] = ""
 
 
+                    st.session_state[
+                        "flash_message"
+                    ] = (
+                        "Pantry backup restored."
+                    )
+
+
                     st.rerun()
 
 
             except Exception as error:
 
-
                 st.error(
-                    f"Unable to restore: "
-                    f"{error}"
+                    "Unable to restore "
+                    f"backup: {error}"
                 )
